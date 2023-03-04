@@ -2,10 +2,15 @@ package router
 
 import (
 	"gateway-micro/common/lib"
+	"gateway-micro/controller"
 	"gateway-micro/docs"
+	"gateway-micro/middleware"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
 )
 
 // @title Swagger Example API
@@ -71,5 +76,33 @@ func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 	})
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// 管理员登录
+	adminLoginRouter := router.Group("/admin_login")
+	store, err := redis.NewStore(10, "tcp", "localhost:6379", "", []byte("secret"))
+	if err != nil {
+		log.Fatalf("sessions.NewRedisStore err:%v", err)
+	}
+	adminLoginRouter.Use(
+		sessions.Sessions("mysession", store),
+		middleware.RecoveryMiddleware(),
+		middleware.RequestLog(),
+		middleware.TranslationMiddleware(),
+	)
+	{
+		controller.AdminLoginRegister(adminLoginRouter)
+	}
+
+	// 管理员登录
+	adminRouter := router.Group("/admin")
+	adminRouter.Use(
+		sessions.Sessions("mysession", store),
+		middleware.RecoveryMiddleware(),
+		middleware.RequestLog(),
+		middleware.SessionAuthMiddleware(),
+		middleware.TranslationMiddleware(),
+	)
+	{
+		controller.AdminRegister(adminRouter)
+	}
 	return router
 }
