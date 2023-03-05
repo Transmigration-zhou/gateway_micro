@@ -108,7 +108,7 @@ func (service *ServiceController) ServiceList(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id		query	int64	true	"关键词"
-// @Success      200	{object}	middleware.Response{data=dto.ServiceListOutput}
+// @Success      200	{object}	middleware.Response{data=string}
 // @Router       /service/service_delete	[get]
 func (service *ServiceController) ServiceDelete(c *gin.Context) {
 	params := &dto.ServiceDeleteInput{}
