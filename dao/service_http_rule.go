@@ -21,9 +21,9 @@ func (t *HttpRule) TableName() string {
 	return "gateway_service_http_rule"
 }
 
-func (t *HttpRule) Find(c *gin.Context, db *gorm.DB, search *HttpRule) (*HttpRule, error) {
+func (t *HttpRule) First(c *gin.Context, db *gorm.DB, search *HttpRule) (*HttpRule, error) {
 	model := &HttpRule{}
-	err := db.WithContext(c).Where(search).Find(model).Error
+	err := db.WithContext(c).Where(search).First(model).Error
 	return model, err
 }
 

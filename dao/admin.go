@@ -23,7 +23,7 @@ func (t *Admin) TableName() string {
 	return "gateway_admin"
 }
 func (t *Admin) LoginCheck(c *gin.Context, tx *gorm.DB, param *dto.AdminLoginInput) (*Admin, error) {
-	adminInfo, err := t.Find(c, tx, &Admin{UserName: param.UserName, IsDelete: 0})
+	adminInfo, err := t.First(c, tx, &Admin{UserName: param.UserName, IsDelete: 0})
 	if err != nil {
 		return nil, errors.New("用户信息不存在")
 	}
@@ -34,9 +34,9 @@ func (t *Admin) LoginCheck(c *gin.Context, tx *gorm.DB, param *dto.AdminLoginInp
 	return adminInfo, nil
 }
 
-func (t *Admin) Find(c *gin.Context, db *gorm.DB, search *Admin) (*Admin, error) {
+func (t *Admin) First(c *gin.Context, db *gorm.DB, search *Admin) (*Admin, error) {
 	out := &Admin{}
-	err := db.WithContext(c).Where(search).Find(out).Error
+	err := db.WithContext(c).Where(search).First(out).Error
 	if err != nil {
 		return nil, err
 	}

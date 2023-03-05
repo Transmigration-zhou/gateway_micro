@@ -15,9 +15,9 @@ func (t *TcpRule) TableName() string {
 	return "gateway_service_tcp_rule"
 }
 
-func (t *TcpRule) Find(c *gin.Context, db *gorm.DB, search *TcpRule) (*TcpRule, error) {
+func (t *TcpRule) First(c *gin.Context, db *gorm.DB, search *TcpRule) (*TcpRule, error) {
 	model := &TcpRule{}
-	err := db.WithContext(c).Where(search).Find(model).Error
+	err := db.WithContext(c).Where(search).First(model).Error
 	return model, err
 }
 

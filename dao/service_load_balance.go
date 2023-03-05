@@ -27,9 +27,9 @@ func (t *LoadBalance) TableName() string {
 	return "gateway_service_load_balance"
 }
 
-func (t *LoadBalance) Find(c *gin.Context, db *gorm.DB, search *LoadBalance) (*LoadBalance, error) {
+func (t *LoadBalance) First(c *gin.Context, db *gorm.DB, search *LoadBalance) (*LoadBalance, error) {
 	model := &LoadBalance{}
-	err := db.WithContext(c).Where(search).Find(model).Error
+	err := db.WithContext(c).Where(search).First(model).Error
 	return model, err
 }
 

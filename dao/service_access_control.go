@@ -20,9 +20,9 @@ func (t *AccessControl) TableName() string {
 	return "gateway_service_access_control"
 }
 
-func (t *AccessControl) Find(c *gin.Context, db *gorm.DB, search *AccessControl) (*AccessControl, error) {
+func (t *AccessControl) First(c *gin.Context, db *gorm.DB, search *AccessControl) (*AccessControl, error) {
 	model := &AccessControl{}
-	err := db.WithContext(c).Where(search).Find(model).Error
+	err := db.WithContext(c).Where(search).First(model).Error
 	return model, err
 }
 

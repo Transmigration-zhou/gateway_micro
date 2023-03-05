@@ -16,9 +16,9 @@ func (t *GrpcRule) TableName() string {
 	return "gateway_service_grpc_rule"
 }
 
-func (t *GrpcRule) Find(c *gin.Context, db *gorm.DB, search *GrpcRule) (*GrpcRule, error) {
+func (t *GrpcRule) First(c *gin.Context, db *gorm.DB, search *GrpcRule) (*GrpcRule, error) {
 	model := &GrpcRule{}
-	err := db.WithContext(c).Where(search).Find(model).Error
+	err := db.WithContext(c).Where(search).First(model).Error
 	return model, err
 }
 

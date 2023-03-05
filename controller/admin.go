@@ -76,7 +76,7 @@ func (adminLogin *AdminController) ChangePwd(c *gin.Context) {
 		return
 	}
 	admin := &dao.Admin{}
-	admin, err = admin.Find(c, db, &dao.Admin{UserName: adminSessionInfo.UserName})
+	admin, err = admin.First(c, db, &dao.Admin{UserName: adminSessionInfo.UserName})
 	if err != nil {
 		middleware.ResponseError(c, 2002, err)
 		return

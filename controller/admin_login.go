@@ -35,7 +35,6 @@ func (adminLogin *AdminLoginController) AdminLogin(c *gin.Context) {
 		middleware.ResponseError(c, 2000, err)
 		return
 	}
-
 	db, err := lib.GetGormPool("default")
 	if err != nil {
 		middleware.ResponseError(c, 2001, err)
