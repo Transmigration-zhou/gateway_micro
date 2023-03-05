@@ -26,9 +26,9 @@ func AdminLoginRegister(group *gin.RouterGroup) {
 // @Tags         管理员接口
 // @Accept       json
 // @Produce      json
-// @Param        body 	body 		dto.AdminLoginInput  true  "body"
+// @Param        body 	body 		dto.AdminLoginInput	true	"body"
 // @Success      200  	{object}  	middleware.Response{data=dto.AdminLoginOutput}
-// @Router       /admin_login/login [post]
+// @Router       /admin_login/login	[post]
 func (adminLogin *AdminLoginController) AdminLogin(c *gin.Context) {
 	params := &dto.AdminLoginInput{}
 	if err := params.BindValidParam(c); err != nil {
@@ -41,6 +41,7 @@ func (adminLogin *AdminLoginController) AdminLogin(c *gin.Context) {
 		middleware.ResponseError(c, 2001, err)
 		return
 	}
+
 	admin := &dao.Admin{}
 	admin, err = admin.LoginCheck(c, db, params)
 	if err != nil {
@@ -73,8 +74,8 @@ func (adminLogin *AdminLoginController) AdminLogin(c *gin.Context) {
 // @Tags         管理员接口
 // @Accept       json
 // @Produce      json
-// @Success      200  	{object}  	middleware.Response{data=string}
-// @Router       /admin_login/logout [get]
+// @Success      200  	{object}	middleware.Response{data=string}
+// @Router       /admin_login/logout	[get]
 func (adminLogin *AdminLoginController) AdminLogOut(c *gin.Context) {
 	sess := sessions.Default(c)
 	sess.Delete(public.AdminSessionInfoKey)

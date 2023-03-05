@@ -25,8 +25,8 @@ func AdminRegister(group *gin.RouterGroup) {
 // @Tags         管理员接口
 // @Accept       json
 // @Produce      json
-// @Success      200  	{object}  	middleware.Response{data=dto.AdminInfoOutput}
-// @Router       /admin/admin_info [get]
+// @Success      200	{object}	middleware.Response{data=dto.AdminInfoOutput}
+// @Router       /admin/admin_info	[get]
 func (adminLogin *AdminController) AdminInfo(c *gin.Context) {
 	sess := sessions.Default(c)
 	sessInfo := sess.Get(public.AdminSessionInfoKey)
@@ -52,9 +52,9 @@ func (adminLogin *AdminController) AdminInfo(c *gin.Context) {
 // @Tags         管理员接口
 // @Accept       json
 // @Produce      json
-// @Param        body 	body 		dto.ChangePwdInput  true  "body"
-// @Success      200  	{object}  	middleware.Response{data=string}
-// @Router       /admin/change_pwd  [post]
+// @Param        body 	body	dto.ChangePwdInput	true	"body"
+// @Success      200  	{object}	middleware.Response{data=string}
+// @Router       /admin/change_pwd	[post]
 func (adminLogin *AdminController) ChangePwd(c *gin.Context) {
 	params := &dto.ChangePwdInput{}
 	if err := params.BindValidParam(c); err != nil {
