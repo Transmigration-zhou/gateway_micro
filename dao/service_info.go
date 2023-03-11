@@ -23,29 +23,36 @@ func (t *ServiceInfo) TableName() string {
 }
 
 func (t *ServiceInfo) ServiceDetail(c *gin.Context, db *gorm.DB, search *ServiceInfo) (*ServiceDetail, error) {
+	if search.ServiceName == "" {
+		info, err := t.First(c, db, search)
+		if err != nil {
+			return nil, err
+		}
+		search = info
+	}
 	httpRule := &HttpRule{ServiceID: search.ID}
 	httpRule, err := httpRule.First(c, db, httpRule)
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 	tcpRule := &TcpRule{ServiceID: search.ID}
 	tcpRule, err = tcpRule.First(c, db, tcpRule)
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 	grpcRule := &GrpcRule{ServiceID: search.ID}
 	grpcRule, err = grpcRule.First(c, db, grpcRule)
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 	accessControl := &AccessControl{ServiceID: search.ID}
 	accessControl, err = accessControl.First(c, db, accessControl)
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 	loadBalance := &LoadBalance{ServiceID: search.ID}
 	loadBalance, err = loadBalance.First(c, db, loadBalance)
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 

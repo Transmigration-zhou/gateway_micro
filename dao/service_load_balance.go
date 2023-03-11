@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"strings"
@@ -34,10 +35,14 @@ func (t *LoadBalance) First(c *gin.Context, db *gorm.DB, search *LoadBalance) (*
 }
 
 func (t *LoadBalance) Save(c *gin.Context, db *gorm.DB) error {
-	if err := db.WithContext(c).Save(t).Error; err != nil {
-		return err
-	}
-	return nil
+	return db.WithContext(c).Save(t).Error
+}
+
+func (t *LoadBalance) Updates(c *gin.Context, db *gorm.DB) error {
+	data, _ := json.Marshal(&t)
+	m := make(map[string]interface{})
+	json.Unmarshal(data, &m)
+	return db.WithContext(c).Model(&LoadBalance{}).Where("id = ?", t.ID).Updates(&m).Error
 }
 
 func (t *LoadBalance) GetIpListByModel() []string {

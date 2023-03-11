@@ -23,8 +23,5 @@ func (t *GrpcRule) First(c *gin.Context, db *gorm.DB, search *GrpcRule) (*GrpcRu
 }
 
 func (t *GrpcRule) Save(c *gin.Context, db *gorm.DB) error {
-	if err := db.WithContext(c).Save(t).Error; err != nil {
-		return err
-	}
-	return nil
+	return db.WithContext(c).Save(t).Error
 }

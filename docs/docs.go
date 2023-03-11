@@ -323,6 +323,52 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/service/service_update_http": {
+            "post": {
+                "description": "更新HTTP服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "更新HTTP服务",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ServiceUpdateHTTPInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -568,6 +614,137 @@ const docTemplate = `{
                 "total": {
                     "description": "总数",
                     "type": "integer"
+                }
+            }
+        },
+        "dto.ServiceUpdateHTTPInput": {
+            "type": "object",
+            "required": [
+                "id",
+                "ip_list",
+                "rule",
+                "service_desc",
+                "service_name",
+                "weight_list"
+            ],
+            "properties": {
+                "black_list": {
+                    "description": "黑名单ip",
+                    "type": "string",
+                    "example": ""
+                },
+                "client_ip_flow_limit": {
+                    "description": "客户端ip限流",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "header_transfor": {
+                    "description": "header转换",
+                    "type": "string",
+                    "example": ""
+                },
+                "id": {
+                    "description": "服务ID",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 63
+                },
+                "ip_list": {
+                    "description": "ip列表",
+                    "type": "string",
+                    "example": "127.0.0.1:80"
+                },
+                "need_https": {
+                    "description": "支持https",
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
+                },
+                "need_strip_uri": {
+                    "description": "启用strip_uri",
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
+                },
+                "need_websocket": {
+                    "description": "是否支持websocket",
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
+                },
+                "open_auth": {
+                    "description": "关键词",
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
+                },
+                "round_type": {
+                    "description": "轮询方式",
+                    "type": "integer",
+                    "maximum": 3,
+                    "minimum": 0
+                },
+                "rule": {
+                    "description": "域名或者前缀",
+                    "type": "string",
+                    "example": "/test_http_service_indb"
+                },
+                "rule_type": {
+                    "description": "接入类型",
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
+                },
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "test_http_service_indb"
+                },
+                "service_flow_limit": {
+                    "description": "服务端限流",
+                    "type": "integer"
+                },
+                "service_name": {
+                    "description": "服务名",
+                    "type": "string",
+                    "example": "test_http_service_indb"
+                },
+                "upstream_connect_timeout": {
+                    "description": "建立连接超时，单位s",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "upstream_header_timeout": {
+                    "description": "获取header超时，单位s",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "upstream_idle_timeout": {
+                    "description": "链接最大空闲时间，单位s",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "upstream_max_idle": {
+                    "description": "最大空闲链接数",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "url_rewrite": {
+                    "description": "url重写功能",
+                    "type": "string",
+                    "example": ""
+                },
+                "weight_list": {
+                    "description": "权重列表",
+                    "type": "string",
+                    "example": "50"
+                },
+                "white_list": {
+                    "description": "白名单ip",
+                    "type": "string",
+                    "example": ""
                 }
             }
         },

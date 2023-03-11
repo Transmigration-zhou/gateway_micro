@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -28,8 +29,12 @@ func (t *HttpRule) First(c *gin.Context, db *gorm.DB, search *HttpRule) (*HttpRu
 }
 
 func (t *HttpRule) Save(c *gin.Context, db *gorm.DB) error {
-	if err := db.WithContext(c).Save(t).Error; err != nil {
-		return err
-	}
-	return nil
+	return db.WithContext(c).Save(t).Error
+}
+
+func (t *HttpRule) Updates(c *gin.Context, db *gorm.DB) error {
+	data, _ := json.Marshal(&t)
+	m := make(map[string]interface{})
+	json.Unmarshal(data, &m)
+	return db.WithContext(c).Model(&HttpRule{}).Where("id = ?", t.ID).Updates(&m).Error
 }

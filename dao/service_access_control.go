@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -27,8 +28,12 @@ func (t *AccessControl) First(c *gin.Context, db *gorm.DB, search *AccessControl
 }
 
 func (t *AccessControl) Save(c *gin.Context, db *gorm.DB) error {
-	if err := db.WithContext(c).Save(t).Error; err != nil {
-		return err
-	}
-	return nil
+	return db.WithContext(c).Save(t).Error
+}
+
+func (t *AccessControl) Updates(c *gin.Context, db *gorm.DB) error {
+	data, _ := json.Marshal(&t)
+	m := make(map[string]interface{})
+	json.Unmarshal(data, &m)
+	return db.WithContext(c).Model(&AccessControl{}).Where("id = ?", t.ID).Updates(&m).Error
 }

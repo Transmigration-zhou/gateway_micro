@@ -22,8 +22,5 @@ func (t *TcpRule) First(c *gin.Context, db *gorm.DB, search *TcpRule) (*TcpRule,
 }
 
 func (t *TcpRule) Save(c *gin.Context, db *gorm.DB) error {
-	if err := db.WithContext(c).Save(t).Error; err != nil {
-		return err
-	}
-	return nil
+	return db.WithContext(c).Save(t).Error
 }
