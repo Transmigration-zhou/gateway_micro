@@ -31,19 +31,11 @@ type ServiceListItemOutput struct {
 	TotalNode   int    `json:"total_node" form:"total_node"`     //节点数
 }
 
-type ServiceDeleteInput struct {
+type ServiceInput struct {
 	ID int64 `json:"id" form:"id" comment:"服务ID" example:"56" validate:"required"` //服务ID
 }
 
-func (param *ServiceDeleteInput) BindValidParam(c *gin.Context) error {
-	return public.DefaultGetValidParams(c, param)
-}
-
-type ServiceDetailInput struct {
-	ID int64 `json:"id" form:"id" comment:"服务ID" example:"56" validate:"required"` //服务ID
-}
-
-func (param *ServiceDetailInput) BindValidParam(c *gin.Context) error {
+func (param *ServiceInput) BindValidParam(c *gin.Context) error {
 	return public.DefaultGetValidParams(c, param)
 }
 
@@ -108,4 +100,9 @@ type ServiceUpdateHTTPInput struct {
 
 func (param *ServiceUpdateHTTPInput) BindValidParam(c *gin.Context) error {
 	return public.DefaultGetValidParams(c, param)
+}
+
+type ServiceStatisticsOutput struct {
+	Today     []int64 `json:"today" form:"today" comment:"今日流量" validate:""`         //今日流量
+	Yesterday []int64 `json:"yesterday" form:"yesterday" comment:"昨日流量" validate:""` //昨日流量
 }

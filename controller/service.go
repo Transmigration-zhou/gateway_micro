@@ -10,6 +10,7 @@ import (
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
 	"strings"
+	"time"
 )
 
 type ServiceController struct{}
@@ -19,6 +20,7 @@ func ServiceRegister(group *gin.RouterGroup) {
 	group.GET("/service_list", service.ServiceList)
 	group.GET("/service_delete", service.ServiceDelete)
 	group.GET("/service_detail", service.ServiceDetail)
+	group.GET("/service_statistics", service.ServiceStatistics)
 	group.POST("/service_add_http", service.ServiceAddHTTP)
 	group.POST("/service_update_http", service.ServiceUpdateHTTP)
 }
@@ -116,7 +118,7 @@ func (service *ServiceController) ServiceList(c *gin.Context) {
 // @Success      200	{object}	middleware.Response{data=string}
 // @Router       /service/service_delete	[get]
 func (service *ServiceController) ServiceDelete(c *gin.Context) {
-	params := &dto.ServiceDeleteInput{}
+	params := &dto.ServiceInput{}
 	if err := params.BindValidParam(c); err != nil {
 		middleware.ResponseError(c, 2000, err)
 		return
@@ -154,7 +156,7 @@ func (service *ServiceController) ServiceDelete(c *gin.Context) {
 // @Success      200	{object}	middleware.Response{data=dao.ServiceDetail}
 // @Router       /service/service_detail	[get]
 func (service *ServiceController) ServiceDetail(c *gin.Context) {
-	params := &dto.ServiceDetailInput{}
+	params := &dto.ServiceInput{}
 	if err := params.BindValidParam(c); err != nil {
 		middleware.ResponseError(c, 2000, err)
 		return
@@ -180,6 +182,65 @@ func (service *ServiceController) ServiceDetail(c *gin.Context) {
 	}
 
 	middleware.ResponseSuccess(c, serviceDetail)
+}
+
+// ServiceStatistics godoc
+// @Summary      服务统计
+// @Description  服务统计
+// @Tags         服务管理
+// @Accept       json
+// @Produce      json
+// @Param        id		query	int64	true	"关键词"
+// @Success      200	{object}	middleware.Response{data=dto.ServiceStatisticsOutput}
+// @Router       /service/service_statistics	[get]
+func (service *ServiceController) ServiceStatistics(c *gin.Context) {
+	params := &dto.ServiceInput{}
+	if err := params.BindValidParam(c); err != nil {
+		middleware.ResponseError(c, 2000, err)
+		return
+	}
+
+	//db, err := lib.GetGormPool("default")
+	//if err != nil {
+	//	middleware.ResponseError(c, 2001, err)
+	//	return
+	//}
+	//
+	//serviceInfo := &dao.ServiceInfo{ID: params.ID}
+	//serviceInfo, err = serviceInfo.First(c, db, serviceInfo)
+	//if err != nil {
+	//	middleware.ResponseError(c, 2002, err)
+	//	return
+	//}
+	//
+	//serviceDetail, err := serviceInfo.ServiceDetail(c, db, serviceInfo)
+	//if err != nil {
+	//	middleware.ResponseError(c, 2003, err)
+	//	return
+	//}
+	//
+	//counter, err := public.FlowCounterHandler.GetCounter(public.FlowServicePrefix + serviceDetail.Info.ServiceName)
+	//if err != nil {
+	//	middleware.ResponseError(c, 2004, err)
+	//	return
+	//}
+
+	var todayList []int64
+	todayTime := time.Now()
+	for i := 0; i <= todayTime.Hour(); i++ {
+		todayList = append(todayList, 0)
+	}
+
+	var yesterdayList []int64
+	//yesterdayTime := todayTime.Add(-1 * time.Duration(time.Hour*24))
+	for i := 0; i <= 23; i++ {
+		yesterdayList = append(yesterdayList, 0)
+	}
+
+	middleware.ResponseSuccess(c, &dto.ServiceStatisticsOutput{
+		Today:     todayList,
+		Yesterday: yesterdayList,
+	})
 }
 
 // ServiceAddHTTP godoc

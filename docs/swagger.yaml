@@ -305,6 +305,19 @@ definitions:
         description: 总数
         type: integer
     type: object
+  dto.ServiceStatisticsOutput:
+    properties:
+      today:
+        description: 今日流量
+        items:
+          type: integer
+        type: array
+      yesterday:
+        description: 昨日流量
+        items:
+          type: integer
+        type: array
+    type: object
   dto.ServiceUpdateHTTPInput:
     properties:
       black_list:
@@ -648,6 +661,32 @@ paths:
                   $ref: '#/definitions/dto.ServiceListOutput'
               type: object
       summary: 服务列表
+      tags:
+      - 服务管理
+  /service/service_statistics:
+    get:
+      consumes:
+      - application/json
+      description: 服务统计
+      parameters:
+      - description: 关键词
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.ServiceStatisticsOutput'
+              type: object
+      summary: 服务统计
       tags:
       - 服务管理
   /service/service_update_http:
