@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -24,4 +25,11 @@ func (t *GrpcRule) First(c *gin.Context, db *gorm.DB, search *GrpcRule) (*GrpcRu
 
 func (t *GrpcRule) Save(c *gin.Context, db *gorm.DB) error {
 	return db.WithContext(c).Save(t).Error
+}
+
+func (t *GrpcRule) Updates(c *gin.Context, db *gorm.DB) error {
+	data, _ := json.Marshal(&t)
+	m := make(map[string]interface{})
+	json.Unmarshal(data, &m)
+	return db.WithContext(c).Model(&GrpcRule{}).Where("id = ?", t.ID).Updates(&m).Error
 }

@@ -177,6 +177,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/service/service_add_grpc": {
+            "post": {
+                "description": "添加GRPC服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "添加GRPC服务",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ServiceAddGrpcInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/service/service_add_http": {
             "post": {
                 "description": "添加HTTP服务",
@@ -198,6 +244,52 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dto.ServiceAddHTTPInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/service/service_add_tcp": {
+            "post": {
+                "description": "添加TCP服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "添加TCP服务",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ServiceAddTcpInput"
                         }
                     }
                 ],
@@ -412,6 +504,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/service/service_update_grpc": {
+            "post": {
+                "description": "更新GRPC服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "更新GRPC服务",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ServiceUpdateGrpcInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/service/service_update_http": {
             "post": {
                 "description": "更新HTTP服务",
@@ -425,6 +563,52 @@ const docTemplate = `{
                     "服务管理"
                 ],
                 "summary": "更新HTTP服务",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ServiceUpdateHTTPInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/service/service_update_tcp": {
+            "post": {
+                "description": "更新TCP服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "更新TCP服务",
                 "parameters": [
                     {
                         "description": "body",
@@ -713,6 +897,76 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.ServiceAddGrpcInput": {
+            "type": "object",
+            "required": [
+                "ip_list",
+                "port",
+                "service_desc",
+                "service_name",
+                "weight_list"
+            ],
+            "properties": {
+                "black_list": {
+                    "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string"
+                },
+                "client_ip_flow_limit": {
+                    "description": "客户端IP限流",
+                    "type": "integer"
+                },
+                "forbid_list": {
+                    "description": "禁用IP列表",
+                    "type": "string"
+                },
+                "header_transfor": {
+                    "description": "header头转换",
+                    "type": "string"
+                },
+                "ip_list": {
+                    "description": "IP列表",
+                    "type": "string"
+                },
+                "open_auth": {
+                    "description": "是否开启权限验证",
+                    "type": "integer"
+                },
+                "port": {
+                    "description": "端口，需要设置8001-8999范围内",
+                    "type": "integer",
+                    "maximum": 8999,
+                    "minimum": 8001
+                },
+                "round_type": {
+                    "description": "轮询策略",
+                    "type": "integer"
+                },
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string"
+                },
+                "service_flow_limit": {
+                    "description": "服务端限流",
+                    "type": "integer"
+                },
+                "service_name": {
+                    "description": "服务名",
+                    "type": "string"
+                },
+                "weight_list": {
+                    "description": "权重列表",
+                    "type": "string"
+                },
+                "white_host_name": {
+                    "description": "白名单主机名，以逗号间隔",
+                    "type": "string"
+                },
+                "white_list": {
+                    "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string"
+                }
+            }
+        },
         "dto.ServiceAddHTTPInput": {
             "type": "object",
             "required": [
@@ -762,7 +1016,7 @@ const docTemplate = `{
                     "minimum": 0
                 },
                 "open_auth": {
-                    "description": "关键词",
+                    "description": "是否开启权限",
                     "type": "integer",
                     "maximum": 1,
                     "minimum": 0
@@ -834,6 +1088,76 @@ const docTemplate = `{
                     "description": "白名单ip",
                     "type": "string",
                     "example": ""
+                }
+            }
+        },
+        "dto.ServiceAddTcpInput": {
+            "type": "object",
+            "required": [
+                "ip_list",
+                "port",
+                "service_desc",
+                "service_name",
+                "weight_list"
+            ],
+            "properties": {
+                "black_list": {
+                    "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string"
+                },
+                "client_ip_flow_limit": {
+                    "description": "客户端IP限流",
+                    "type": "integer"
+                },
+                "forbid_list": {
+                    "description": "禁用IP列表",
+                    "type": "string"
+                },
+                "header_transfor": {
+                    "description": "header头转换",
+                    "type": "string"
+                },
+                "ip_list": {
+                    "description": "IP列表",
+                    "type": "string"
+                },
+                "open_auth": {
+                    "description": "是否开启权限验证",
+                    "type": "integer"
+                },
+                "port": {
+                    "description": "端口，需要设置8001-8999范围内",
+                    "type": "integer",
+                    "maximum": 8999,
+                    "minimum": 8001
+                },
+                "round_type": {
+                    "description": "轮询策略",
+                    "type": "integer"
+                },
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string"
+                },
+                "service_flow_limit": {
+                    "description": "服务端限流",
+                    "type": "integer"
+                },
+                "service_name": {
+                    "description": "服务名",
+                    "type": "string"
+                },
+                "weight_list": {
+                    "description": "权重列表",
+                    "type": "string"
+                },
+                "white_host_name": {
+                    "description": "白名单主机名，以逗号间隔",
+                    "type": "string"
+                },
+                "white_list": {
+                    "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string"
                 }
             }
         },
@@ -909,6 +1233,81 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.ServiceUpdateGrpcInput": {
+            "type": "object",
+            "required": [
+                "id",
+                "ip_list",
+                "port",
+                "service_desc",
+                "service_name",
+                "weight_list"
+            ],
+            "properties": {
+                "black_list": {
+                    "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string"
+                },
+                "client_ip_flow_limit": {
+                    "description": "客户端IP限流",
+                    "type": "integer"
+                },
+                "forbid_list": {
+                    "description": "禁用IP列表",
+                    "type": "string"
+                },
+                "header_transfor": {
+                    "description": "header头转换",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "服务ID",
+                    "type": "integer"
+                },
+                "ip_list": {
+                    "description": "IP列表",
+                    "type": "string"
+                },
+                "open_auth": {
+                    "description": "是否开启权限验证",
+                    "type": "integer"
+                },
+                "port": {
+                    "description": "端口，需要设置8001-8999范围内",
+                    "type": "integer",
+                    "maximum": 8999,
+                    "minimum": 8001
+                },
+                "round_type": {
+                    "description": "轮询策略",
+                    "type": "integer"
+                },
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string"
+                },
+                "service_flow_limit": {
+                    "description": "服务端限流",
+                    "type": "integer"
+                },
+                "service_name": {
+                    "description": "服务名",
+                    "type": "string"
+                },
+                "weight_list": {
+                    "description": "权重列表",
+                    "type": "string"
+                },
+                "white_host_name": {
+                    "description": "白名单主机名，以逗号间隔",
+                    "type": "string"
+                },
+                "white_list": {
+                    "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string"
+                }
+            }
+        },
         "dto.ServiceUpdateHTTPInput": {
             "type": "object",
             "required": [
@@ -921,9 +1320,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "black_list": {
-                    "description": "黑名单ip",
+                    "description": "黑名单ip，以逗号间隔，白名单优先级高于黑名单",
                     "type": "string",
-                    "example": ""
+                    "example": "valid_list"
                 },
                 "client_ip_flow_limit": {
                     "description": "客户端ip限流",
@@ -965,7 +1364,7 @@ const docTemplate = `{
                     "minimum": 0
                 },
                 "open_auth": {
-                    "description": "关键词",
+                    "description": "是否开启权限",
                     "type": "integer",
                     "maximum": 1,
                     "minimum": 0
@@ -996,7 +1395,8 @@ const docTemplate = `{
                 },
                 "service_flow_limit": {
                     "description": "服务端限流",
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0
                 },
                 "service_name": {
                     "description": "服务名",
@@ -1034,9 +1434,9 @@ const docTemplate = `{
                     "example": "50"
                 },
                 "white_list": {
-                    "description": "白名单ip",
+                    "description": "白名单ip，以逗号间隔，白名单优先级高于黑名单",
                     "type": "string",
-                    "example": ""
+                    "example": "valid_list"
                 }
             }
         },

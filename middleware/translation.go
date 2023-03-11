@@ -94,6 +94,18 @@ func TranslationMiddleware() gin.HandlerFunc {
 				}
 				return true
 			})
+			val.RegisterValidation("valid_list", func(fl validator.FieldLevel) bool {
+				if fl.Field().String() == "" {
+					return true
+				}
+				for _, item := range strings.Split(fl.Field().String(), ",") {
+					matched, _ := regexp.Match(`\S+`, []byte(item))
+					if !matched {
+						return false
+					}
+				}
+				return true
+			})
 
 			//自定义翻译器
 			val.RegisterTranslation("valid_username", trans, func(ut ut.Translator) error {
@@ -136,6 +148,12 @@ func TranslationMiddleware() gin.HandlerFunc {
 				return ut.Add("valid_weight_list", "{0} 不符合输入格式", true)
 			}, func(ut ut.Translator, fe validator.FieldError) string {
 				t, _ := ut.T("valid_weight_list", fe.Field())
+				return t
+			})
+			val.RegisterTranslation("valid_list", trans, func(ut ut.Translator) error {
+				return ut.Add("valid_ip_list", "{0} 不符合输入格式", true)
+			}, func(ut ut.Translator, fe validator.FieldError) string {
+				t, _ := ut.T("valid_ip_list", fe.Field())
 				return t
 			})
 		}

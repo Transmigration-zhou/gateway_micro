@@ -167,6 +167,59 @@ definitions:
     required:
     - password
     type: object
+  dto.ServiceAddGrpcInput:
+    properties:
+      black_list:
+        description: 黑名单IP，以逗号间隔，白名单优先级高于黑名单
+        type: string
+      client_ip_flow_limit:
+        description: 客户端IP限流
+        type: integer
+      forbid_list:
+        description: 禁用IP列表
+        type: string
+      header_transfor:
+        description: header头转换
+        type: string
+      ip_list:
+        description: IP列表
+        type: string
+      open_auth:
+        description: 是否开启权限验证
+        type: integer
+      port:
+        description: 端口，需要设置8001-8999范围内
+        maximum: 8999
+        minimum: 8001
+        type: integer
+      round_type:
+        description: 轮询策略
+        type: integer
+      service_desc:
+        description: 服务描述
+        type: string
+      service_flow_limit:
+        description: 服务端限流
+        type: integer
+      service_name:
+        description: 服务名
+        type: string
+      weight_list:
+        description: 权重列表
+        type: string
+      white_host_name:
+        description: 白名单主机名，以逗号间隔
+        type: string
+      white_list:
+        description: 白名单IP，以逗号间隔，白名单优先级高于黑名单
+        type: string
+    required:
+    - ip_list
+    - port
+    - service_desc
+    - service_name
+    - weight_list
+    type: object
   dto.ServiceAddHTTPInput:
     properties:
       black_list:
@@ -201,7 +254,7 @@ definitions:
         minimum: 0
         type: integer
       open_auth:
-        description: 关键词
+        description: 是否开启权限
         maximum: 1
         minimum: 0
         type: integer
@@ -267,6 +320,59 @@ definitions:
     - service_name
     - weight_list
     type: object
+  dto.ServiceAddTcpInput:
+    properties:
+      black_list:
+        description: 黑名单IP，以逗号间隔，白名单优先级高于黑名单
+        type: string
+      client_ip_flow_limit:
+        description: 客户端IP限流
+        type: integer
+      forbid_list:
+        description: 禁用IP列表
+        type: string
+      header_transfor:
+        description: header头转换
+        type: string
+      ip_list:
+        description: IP列表
+        type: string
+      open_auth:
+        description: 是否开启权限验证
+        type: integer
+      port:
+        description: 端口，需要设置8001-8999范围内
+        maximum: 8999
+        minimum: 8001
+        type: integer
+      round_type:
+        description: 轮询策略
+        type: integer
+      service_desc:
+        description: 服务描述
+        type: string
+      service_flow_limit:
+        description: 服务端限流
+        type: integer
+      service_name:
+        description: 服务名
+        type: string
+      weight_list:
+        description: 权重列表
+        type: string
+      white_host_name:
+        description: 白名单主机名，以逗号间隔
+        type: string
+      white_list:
+        description: 白名单IP，以逗号间隔，白名单优先级高于黑名单
+        type: string
+    required:
+    - ip_list
+    - port
+    - service_desc
+    - service_name
+    - weight_list
+    type: object
   dto.ServiceListItemOutput:
     properties:
       id:
@@ -318,11 +424,68 @@ definitions:
           type: integer
         type: array
     type: object
+  dto.ServiceUpdateGrpcInput:
+    properties:
+      black_list:
+        description: 黑名单IP，以逗号间隔，白名单优先级高于黑名单
+        type: string
+      client_ip_flow_limit:
+        description: 客户端IP限流
+        type: integer
+      forbid_list:
+        description: 禁用IP列表
+        type: string
+      header_transfor:
+        description: header头转换
+        type: string
+      id:
+        description: 服务ID
+        type: integer
+      ip_list:
+        description: IP列表
+        type: string
+      open_auth:
+        description: 是否开启权限验证
+        type: integer
+      port:
+        description: 端口，需要设置8001-8999范围内
+        maximum: 8999
+        minimum: 8001
+        type: integer
+      round_type:
+        description: 轮询策略
+        type: integer
+      service_desc:
+        description: 服务描述
+        type: string
+      service_flow_limit:
+        description: 服务端限流
+        type: integer
+      service_name:
+        description: 服务名
+        type: string
+      weight_list:
+        description: 权重列表
+        type: string
+      white_host_name:
+        description: 白名单主机名，以逗号间隔
+        type: string
+      white_list:
+        description: 白名单IP，以逗号间隔，白名单优先级高于黑名单
+        type: string
+    required:
+    - id
+    - ip_list
+    - port
+    - service_desc
+    - service_name
+    - weight_list
+    type: object
   dto.ServiceUpdateHTTPInput:
     properties:
       black_list:
-        description: 黑名单ip
-        example: ""
+        description: 黑名单ip，以逗号间隔，白名单优先级高于黑名单
+        example: valid_list
         type: string
       client_ip_flow_limit:
         description: 客户端ip限流
@@ -357,7 +520,7 @@ definitions:
         minimum: 0
         type: integer
       open_auth:
-        description: 关键词
+        description: 是否开启权限
         maximum: 1
         minimum: 0
         type: integer
@@ -383,6 +546,7 @@ definitions:
         type: string
       service_flow_limit:
         description: 服务端限流
+        minimum: 0
         type: integer
       service_name:
         description: 服务名
@@ -413,8 +577,8 @@ definitions:
         example: "50"
         type: string
       white_list:
-        description: 白名单ip
-        example: ""
+        description: 白名单ip，以逗号间隔，白名单优先级高于黑名单
+        example: valid_list
         type: string
     required:
     - id
@@ -549,6 +713,33 @@ paths:
       summary: 管理员登出
       tags:
       - 管理员接口
+  /service/service_add_grpc:
+    post:
+      consumes:
+      - application/json
+      description: 添加GRPC服务
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ServiceAddGrpcInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 添加GRPC服务
+      tags:
+      - 服务管理
   /service/service_add_http:
     post:
       consumes:
@@ -574,6 +765,33 @@ paths:
                   type: string
               type: object
       summary: 添加HTTP服务
+      tags:
+      - 服务管理
+  /service/service_add_tcp:
+    post:
+      consumes:
+      - application/json
+      description: 添加TCP服务
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ServiceAddTcpInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 添加TCP服务
       tags:
       - 服务管理
   /service/service_delete:
@@ -689,6 +907,33 @@ paths:
       summary: 服务统计
       tags:
       - 服务管理
+  /service/service_update_grpc:
+    post:
+      consumes:
+      - application/json
+      description: 更新GRPC服务
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ServiceUpdateGrpcInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 更新GRPC服务
+      tags:
+      - 服务管理
   /service/service_update_http:
     post:
       consumes:
@@ -714,6 +959,33 @@ paths:
                   type: string
               type: object
       summary: 更新HTTP服务
+      tags:
+      - 服务管理
+  /service/service_update_tcp:
+    post:
+      consumes:
+      - application/json
+      description: 更新TCP服务
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ServiceUpdateHTTPInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 更新TCP服务
       tags:
       - 服务管理
 swagger: "2.0"
