@@ -39,6 +39,14 @@ func (param *ServiceDeleteInput) BindValidParam(c *gin.Context) error {
 	return public.DefaultGetValidParams(c, param)
 }
 
+type ServiceDetailInput struct {
+	ID int64 `json:"id" form:"id" comment:"服务ID" example:"56" validate:"required"` //服务ID
+}
+
+func (param *ServiceDetailInput) BindValidParam(c *gin.Context) error {
+	return public.DefaultGetValidParams(c, param)
+}
+
 type ServiceAddHTTPInput struct {
 	ServiceName string `json:"service_name" form:"service_name" comment:"服务名" example:"" validate:"required,valid_service_name"` //服务名
 	ServiceDesc string `json:"service_desc" form:"service_desc" comment:"服务描述" example:"" validate:"required,min=1,max=255"`     //服务描述
