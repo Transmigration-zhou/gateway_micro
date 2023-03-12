@@ -6,9 +6,9 @@ import (
 )
 
 type ServiceListInput struct {
-	Info     string `json:"info" form:"info" comment:"关键词" example:"" validate:""`                      //关键词
-	PageNo   int    `json:"page_no" form:"page_no" comment:"页数" example:"1" validate:"required"`        //页数
-	PageSize int    `json:"page_size" form:"page_size" comment:"每页条数" example:"20" validate:"required"` //每页条数
+	Info     string `json:"info" form:"info" comment:"关键词" example:"" validate:""`                                    //关键词
+	PageNo   int    `json:"page_no" form:"page_no" comment:"页数" example:"1" validate:"required,min=1,max=999"`        //页数
+	PageSize int    `json:"page_size" form:"page_size" comment:"每页条数" example:"20" validate:"required,min=1,max=999"` //每页条数
 }
 
 func (param *ServiceListInput) BindValidParam(c *gin.Context) error {
@@ -16,8 +16,8 @@ func (param *ServiceListInput) BindValidParam(c *gin.Context) error {
 }
 
 type ServiceListOutput struct {
-	Total int64                   `json:"total" form:"total" comment:"总数" validate:""` //总数
-	List  []ServiceListItemOutput `json:"list" form:"list" comment:"列表" validate:""`   //列表
+	Total int64                   `json:"total" form:"total" comment:"总数"` //总数
+	List  []ServiceListItemOutput `json:"list" form:"list" comment:"列表"`   //列表
 }
 
 type ServiceListItemOutput struct {
@@ -26,8 +26,8 @@ type ServiceListItemOutput struct {
 	ServiceDesc string `json:"service_desc" form:"service_desc"` //服务描述
 	LoadType    int    `json:"load_type" form:"load_type"`       //类型
 	ServiceAddr string `json:"service_addr" form:"service_addr"` //服务地址
-	Qps         int64  `json:"qps" form:"qps"`                   //qps
-	Qpd         int64  `json:"qpd" form:"qpd"`                   //qpd
+	Qps         int64  `json:"qps" form:"qps"`                   //每秒请求量
+	Qpd         int64  `json:"qpd" form:"qpd"`                   //日请求量
 	TotalNode   int    `json:"total_node" form:"total_node"`     //节点数
 }
 
@@ -103,8 +103,8 @@ func (param *ServiceUpdateHTTPInput) BindValidParam(c *gin.Context) error {
 }
 
 type ServiceStatisticsOutput struct {
-	Today     []int64 `json:"today" form:"today" comment:"今日流量" validate:""`         //今日流量
-	Yesterday []int64 `json:"yesterday" form:"yesterday" comment:"昨日流量" validate:""` //昨日流量
+	Today     []int64 `json:"today" form:"today" comment:"今日流量" validate:"required"`         //今日流量
+	Yesterday []int64 `json:"yesterday" form:"yesterday" comment:"昨日流量" validate:"required"` //昨日流量
 }
 
 type ServiceAddTcpInput struct {

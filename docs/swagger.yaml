@@ -120,6 +120,29 @@ definitions:
       service_id:
         type: integer
     type: object
+  dao.Tenant:
+    properties:
+      create_at:
+        type: string
+      id:
+        type: integer
+      is_delete:
+        type: integer
+      name:
+        type: string
+      qpd:
+        type: integer
+      qps:
+        type: integer
+      secret:
+        type: string
+      tenant_id:
+        type: string
+      update_at:
+        type: string
+      white_ips:
+        type: string
+    type: object
   dto.AdminInfoOutput:
     properties:
       avatar:
@@ -405,10 +428,10 @@ definitions:
         description: 类型
         type: integer
       qpd:
-        description: qpd
+        description: 日请求量
         type: integer
       qps:
-        description: qps
+        description: 每秒请求量
         type: integer
       service_addr:
         description: 服务地址
@@ -446,6 +469,9 @@ definitions:
         items:
           type: integer
         type: array
+    required:
+    - today
+    - yesterday
     type: object
   dto.ServiceUpdateGrpcInput:
     properties:
@@ -689,6 +715,107 @@ definitions:
     - service_desc
     - service_name
     - weight_list
+    type: object
+  dto.TenantAddInput:
+    properties:
+      name:
+        example: ""
+        type: string
+      qpd:
+        type: integer
+      qps:
+        type: integer
+      secret:
+        example: ""
+        type: string
+      tenant_id:
+        example: ""
+        type: string
+      white_ips:
+        example: ""
+        type: string
+    required:
+    - name
+    - tenant_id
+    type: object
+  dto.TenantListItemOutput:
+    properties:
+      create_at:
+        type: string
+      id:
+        type: integer
+      is_delete:
+        type: integer
+      name:
+        type: string
+      qpd:
+        type: integer
+      qps:
+        type: integer
+      real_qpd:
+        type: integer
+      real_qps:
+        type: integer
+      secret:
+        type: string
+      tenant_id:
+        type: string
+      update_at:
+        type: string
+      white_ips:
+        type: string
+    type: object
+  dto.TenantListOutput:
+    properties:
+      list:
+        description: 租户列表
+        items:
+          $ref: '#/definitions/dto.TenantListItemOutput'
+        type: array
+      total:
+        description: 租户总数
+        type: integer
+    type: object
+  dto.TenantStatisticsOutput:
+    properties:
+      today:
+        description: 今日流量
+        items:
+          type: integer
+        type: array
+      yesterday:
+        description: 昨日流量
+        items:
+          type: integer
+        type: array
+    required:
+    - today
+    - yesterday
+    type: object
+  dto.TenantUpdateInput:
+    properties:
+      id:
+        type: integer
+      name:
+        example: ""
+        type: string
+      qpd:
+        type: integer
+      qps:
+        type: integer
+      secret:
+        example: ""
+        type: string
+      tenant_id:
+        example: ""
+        type: string
+      white_ips:
+        example: ""
+        type: string
+    required:
+    - id
+    - name
+    - secret
     type: object
   middleware.Response:
     properties:
@@ -1090,4 +1217,171 @@ paths:
       summary: 更新TCP服务
       tags:
       - 服务管理
+  /tenant/tenant_add:
+    post:
+      consumes:
+      - application/json
+      description: 租户添加
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TenantAddInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 租户添加
+      tags:
+      - 租户管理
+  /tenant/tenant_delete:
+    get:
+      consumes:
+      - application/json
+      description: 租户删除
+      parameters:
+      - description: 关键词
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 租户删除
+      tags:
+      - 租户管理
+  /tenant/tenant_detail:
+    get:
+      consumes:
+      - application/json
+      description: 租户详情
+      parameters:
+      - description: 关键词
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dao.Tenant'
+              type: object
+      summary: 租户详情
+      tags:
+      - 租户管理
+  /tenant/tenant_list:
+    get:
+      consumes:
+      - application/json
+      description: 租户列表
+      parameters:
+      - description: 关键词
+        in: query
+        name: info
+        type: string
+      - description: 当前页数
+        in: query
+        name: page_no
+        required: true
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TenantListOutput'
+              type: object
+      summary: 租户列表
+      tags:
+      - 租户管理
+  /tenant/tenant_statistics:
+    get:
+      consumes:
+      - application/json
+      description: 租户统计
+      parameters:
+      - description: 关键词
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TenantStatisticsOutput'
+              type: object
+      summary: 租户统计
+      tags:
+      - 租户管理
+  /tenant/tenant_update:
+    post:
+      consumes:
+      - application/json
+      description: 租户更新
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TenantUpdateInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 租户更新
+      tags:
+      - 租户管理
 swagger: "2.0"
