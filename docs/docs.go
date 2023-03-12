@@ -177,6 +177,111 @@ const docTemplate = `{
                 }
             }
         },
+        "/dashboard/flow_statistics": {
+            "get": {
+                "description": "流量统计",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "首页大盘"
+                ],
+                "summary": "流量统计",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.DashboardStatisticsOutput"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/panel_group_data": {
+            "get": {
+                "description": "指标统计",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "首页大盘"
+                ],
+                "summary": "指标统计",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.PanelGroupDataOutput"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/service_statistics": {
+            "get": {
+                "description": "服务统计",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "首页大盘"
+                ],
+                "summary": "服务统计",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.DashServiceStatisticsOutput"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/service/service_add_grpc": {
             "post": {
                 "description": "添加GRPC服务",
@@ -1210,6 +1315,77 @@ const docTemplate = `{
                     "description": "密码",
                     "type": "string",
                     "example": "admin"
+                }
+            }
+        },
+        "dto.DashServiceStatisticsItemOutput": {
+            "type": "object",
+            "properties": {
+                "load_type": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.DashServiceStatisticsOutput": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.DashServiceStatisticsItemOutput"
+                    }
+                },
+                "legend": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "dto.DashboardStatisticsOutput": {
+            "type": "object",
+            "required": [
+                "today",
+                "yesterday"
+            ],
+            "properties": {
+                "today": {
+                    "description": "今日流量",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "yesterday": {
+                    "description": "昨日流量",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "dto.PanelGroupDataOutput": {
+            "type": "object",
+            "properties": {
+                "app_num": {
+                    "type": "integer"
+                },
+                "current_qps": {
+                    "type": "integer"
+                },
+                "service_num": {
+                    "type": "integer"
+                },
+                "today_request_num": {
+                    "type": "integer"
                 }
             }
         },

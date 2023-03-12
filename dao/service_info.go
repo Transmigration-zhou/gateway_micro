@@ -95,3 +95,12 @@ func (t *ServiceInfo) First(c *gin.Context, db *gorm.DB, search *ServiceInfo) (*
 func (t *ServiceInfo) Save(c *gin.Context, db *gorm.DB) error {
 	return db.WithContext(c).Save(t).Error
 }
+
+func (t *ServiceInfo) GroupByLoadType(c *gin.Context, db *gorm.DB) ([]dto.DashServiceStatisticsItemOutput, error) {
+	var list []dto.DashServiceStatisticsItemOutput
+	query := db.WithContext(c)
+	if err := query.Table(t.TableName()).Where("is_delete = 0").Select("load_type, count(*) as value").Group("load_type").Scan(&list).Error; err != nil {
+		return nil, err
+	}
+	return list, nil
+}

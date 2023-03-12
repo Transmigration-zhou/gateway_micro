@@ -130,5 +130,19 @@ func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 	{
 		controller.TenantRegister(tenantRouter)
 	}
+
+	//首页大盘
+	dashboardRouter := router.Group("/dashboard")
+	dashboardRouter.Use(
+		sessions.Sessions("mysession", store),
+		middleware.RecoveryMiddleware(),
+		middleware.RequestLog(),
+		middleware.SessionAuthMiddleware(),
+		middleware.TranslationMiddleware(),
+	)
+	{
+		controller.DashboardRegister(dashboardRouter)
+	}
+
 	return router
 }
