@@ -616,7 +616,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ServiceUpdateHTTPInput"
+                            "$ref": "#/definitions/dto.ServiceUpdateTcpInput"
                         }
                     }
                 ],
@@ -909,7 +909,8 @@ const docTemplate = `{
             "properties": {
                 "black_list": {
                     "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "client_ip_flow_limit": {
                     "description": "客户端IP限流",
@@ -917,19 +918,24 @@ const docTemplate = `{
                 },
                 "forbid_list": {
                     "description": "禁用IP列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "header_transfor": {
                     "description": "header头转换",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "ip_list": {
                     "description": "IP列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "open_auth": {
                     "description": "是否开启权限验证",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
                 },
                 "port": {
                     "description": "端口，需要设置8001-8999范围内",
@@ -943,7 +949,8 @@ const docTemplate = `{
                 },
                 "service_desc": {
                     "description": "服务描述",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "service_flow_limit": {
                     "description": "服务端限流",
@@ -951,19 +958,23 @@ const docTemplate = `{
                 },
                 "service_name": {
                     "description": "服务名",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "weight_list": {
                     "description": "权重列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "white_host_name": {
                     "description": "白名单主机名，以逗号间隔",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "white_list": {
                     "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 }
             }
         },
@@ -1047,7 +1058,8 @@ const docTemplate = `{
                 },
                 "service_flow_limit": {
                     "description": "服务端限流",
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0
                 },
                 "service_name": {
                     "description": "服务名",
@@ -1103,7 +1115,8 @@ const docTemplate = `{
             "properties": {
                 "black_list": {
                     "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "client_ip_flow_limit": {
                     "description": "客户端IP限流",
@@ -1111,19 +1124,24 @@ const docTemplate = `{
                 },
                 "forbid_list": {
                     "description": "禁用IP列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "header_transfor": {
                     "description": "header头转换",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "ip_list": {
                     "description": "IP列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "open_auth": {
                     "description": "是否开启权限验证",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
                 },
                 "port": {
                     "description": "端口，需要设置8001-8999范围内",
@@ -1137,7 +1155,8 @@ const docTemplate = `{
                 },
                 "service_desc": {
                     "description": "服务描述",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "service_flow_limit": {
                     "description": "服务端限流",
@@ -1145,19 +1164,23 @@ const docTemplate = `{
                 },
                 "service_name": {
                     "description": "服务名",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "weight_list": {
                     "description": "权重列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "white_host_name": {
                     "description": "白名单主机名，以逗号间隔",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "white_list": {
                     "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 }
             }
         },
@@ -1246,7 +1269,8 @@ const docTemplate = `{
             "properties": {
                 "black_list": {
                     "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "client_ip_flow_limit": {
                     "description": "客户端IP限流",
@@ -1254,11 +1278,13 @@ const docTemplate = `{
                 },
                 "forbid_list": {
                     "description": "禁用IP列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "header_transfor": {
                     "description": "header头转换",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "id": {
                     "description": "服务ID",
@@ -1266,11 +1292,14 @@ const docTemplate = `{
                 },
                 "ip_list": {
                     "description": "IP列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "open_auth": {
                     "description": "是否开启权限验证",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
                 },
                 "port": {
                     "description": "端口，需要设置8001-8999范围内",
@@ -1284,7 +1313,8 @@ const docTemplate = `{
                 },
                 "service_desc": {
                     "description": "服务描述",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "service_flow_limit": {
                     "description": "服务端限流",
@@ -1292,19 +1322,23 @@ const docTemplate = `{
                 },
                 "service_name": {
                     "description": "服务名",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "weight_list": {
                     "description": "权重列表",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "white_host_name": {
                     "description": "白名单主机名，以逗号间隔",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "white_list": {
                     "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 }
             }
         },
@@ -1320,9 +1354,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "black_list": {
-                    "description": "黑名单ip，以逗号间隔，白名单优先级高于黑名单",
+                    "description": "黑名单ip",
                     "type": "string",
-                    "example": "valid_list"
+                    "example": ""
                 },
                 "client_ip_flow_limit": {
                     "description": "客户端ip限流",
@@ -1434,9 +1468,95 @@ const docTemplate = `{
                     "example": "50"
                 },
                 "white_list": {
-                    "description": "白名单ip，以逗号间隔，白名单优先级高于黑名单",
+                    "description": "白名单ip",
                     "type": "string",
-                    "example": "valid_list"
+                    "example": ""
+                }
+            }
+        },
+        "dto.ServiceUpdateTcpInput": {
+            "type": "object",
+            "required": [
+                "id",
+                "ip_list",
+                "port",
+                "service_desc",
+                "service_name",
+                "weight_list"
+            ],
+            "properties": {
+                "black_list": {
+                    "description": "黑名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string",
+                    "example": ""
+                },
+                "client_ip_flow_limit": {
+                    "description": "客户端IP限流",
+                    "type": "integer"
+                },
+                "forbid_list": {
+                    "description": "禁用IP列表",
+                    "type": "string",
+                    "example": ""
+                },
+                "header_transfor": {
+                    "description": "header头转换",
+                    "type": "string",
+                    "example": ""
+                },
+                "id": {
+                    "description": "服务ID",
+                    "type": "integer"
+                },
+                "ip_list": {
+                    "description": "IP列表",
+                    "type": "string",
+                    "example": ""
+                },
+                "open_auth": {
+                    "description": "是否开启权限验证",
+                    "type": "integer",
+                    "maximum": 1,
+                    "minimum": 0
+                },
+                "port": {
+                    "description": "端口，需要设置8001-8999范围内",
+                    "type": "integer",
+                    "maximum": 8999,
+                    "minimum": 8001
+                },
+                "round_type": {
+                    "description": "轮询策略",
+                    "type": "integer"
+                },
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string",
+                    "example": ""
+                },
+                "service_flow_limit": {
+                    "description": "服务端限流",
+                    "type": "integer"
+                },
+                "service_name": {
+                    "description": "服务名",
+                    "type": "string",
+                    "example": ""
+                },
+                "weight_list": {
+                    "description": "权重列表",
+                    "type": "string",
+                    "example": ""
+                },
+                "white_host_name": {
+                    "description": "白名单主机名，以逗号间隔",
+                    "type": "string",
+                    "example": ""
+                },
+                "white_list": {
+                    "description": "白名单IP，以逗号间隔，白名单优先级高于黑名单",
+                    "type": "string",
+                    "example": ""
                 }
             }
         },

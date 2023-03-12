@@ -548,7 +548,7 @@ func (service *ServiceController) ServiceAddTcp(c *gin.Context) {
 // @Tags         服务管理
 // @Accept       json
 // @Produce      json
-// @Param        body	body		dto.ServiceUpdateHTTPInput	true	"body"
+// @Param        body	body		dto.ServiceUpdateTcpInput	true	"body"
 // @Success      200	{object}	middleware.Response{data=string}
 // @Router       /service/service_update_tcp	[post]
 func (service *ServiceController) ServiceUpdateTcp(c *gin.Context) {
