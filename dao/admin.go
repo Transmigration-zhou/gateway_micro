@@ -22,6 +22,7 @@ type Admin struct {
 func (t *Admin) TableName() string {
 	return "gateway_admin"
 }
+
 func (t *Admin) LoginCheck(c *gin.Context, tx *gorm.DB, param *dto.AdminLoginInput) (*Admin, error) {
 	adminInfo, err := t.First(c, tx, &Admin{UserName: param.UserName, IsDelete: 0})
 	if err != nil {

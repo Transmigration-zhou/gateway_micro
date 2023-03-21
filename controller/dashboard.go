@@ -51,7 +51,7 @@ func (dashboard *DashboardController) PanelGroupData(c *gin.Context) {
 
 	out := &dto.PanelGroupDataOutput{
 		ServiceNum:      serviceNum,
-		AppNum:          tenantNum,
+		TenantNum:       tenantNum,
 		TodayRequestNum: 0,
 		CurrentQPS:      0,
 	}
@@ -115,12 +115,12 @@ func (dashboard *DashboardController) ServiceStatistics(c *gin.Context) {
 			return
 		}
 		list[index].Name = name
-		legend = append(legend, item.Name)
+		legend = append(legend, name)
 	}
 
 	out := &dto.DashServiceStatisticsOutput{
 		Legend: legend,
-		Data:   list,
+		Series: list,
 	}
 	middleware.ResponseSuccess(c, out)
 }

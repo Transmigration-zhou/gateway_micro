@@ -56,8 +56,8 @@ func (tenant *TenantController) TenantList(c *gin.Context) {
 			Name:     item.Name,
 			Secret:   item.Secret,
 			WhiteIPS: item.WhiteIPS,
-			Qps:      item.Qpd,
-			Qpd:      item.Qps,
+			Qps:      item.Qps,
+			Qpd:      item.Qpd,
 			RealQps:  0,
 			RealQpd:  0,
 		})

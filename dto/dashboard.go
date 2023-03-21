@@ -2,7 +2,7 @@ package dto
 
 type PanelGroupDataOutput struct {
 	ServiceNum      int64 `json:"service_num"`
-	AppNum          int64 `json:"app_num"`
+	TenantNum       int64 `json:"tenant_num"`
 	CurrentQPS      int64 `json:"current_qps"`
 	TodayRequestNum int64 `json:"today_request_num"`
 }
@@ -20,5 +20,5 @@ type DashServiceStatisticsItemOutput struct {
 
 type DashServiceStatisticsOutput struct {
 	Legend []string                          `json:"legend"`
-	Data   []DashServiceStatisticsItemOutput `json:"data"`
+	Series []DashServiceStatisticsItemOutput `json:"series"`
 }

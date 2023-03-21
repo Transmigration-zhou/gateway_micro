@@ -201,13 +201,13 @@ definitions:
     type: object
   dto.DashServiceStatisticsOutput:
     properties:
-      data:
-        items:
-          $ref: '#/definitions/dto.DashServiceStatisticsItemOutput'
-        type: array
       legend:
         items:
           type: string
+        type: array
+      series:
+        items:
+          $ref: '#/definitions/dto.DashServiceStatisticsItemOutput'
         type: array
     type: object
   dto.DashboardStatisticsOutput:
@@ -228,11 +228,11 @@ definitions:
     type: object
   dto.PanelGroupDataOutput:
     properties:
-      app_num:
-        type: integer
       current_qps:
         type: integer
       service_num:
+        type: integer
+      tenant_num:
         type: integer
       today_request_num:
         type: integer

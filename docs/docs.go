@@ -1335,16 +1335,16 @@ const docTemplate = `{
         "dto.DashServiceStatisticsOutput": {
             "type": "object",
             "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.DashServiceStatisticsItemOutput"
-                    }
-                },
                 "legend": {
                     "type": "array",
                     "items": {
                         "type": "string"
+                    }
+                },
+                "series": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.DashServiceStatisticsItemOutput"
                     }
                 }
             }
@@ -1375,13 +1375,13 @@ const docTemplate = `{
         "dto.PanelGroupDataOutput": {
             "type": "object",
             "properties": {
-                "app_num": {
-                    "type": "integer"
-                },
                 "current_qps": {
                     "type": "integer"
                 },
                 "service_num": {
+                    "type": "integer"
+                },
+                "tenant_num": {
                     "type": "integer"
                 },
                 "today_request_num": {
