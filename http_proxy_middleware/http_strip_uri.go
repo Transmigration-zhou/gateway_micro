@@ -2,7 +2,6 @@ package http_proxy_middleware
 
 import (
 	"errors"
-	"fmt"
 	"gateway-micro/dao"
 	"gateway-micro/middleware"
 	"gateway-micro/public"
@@ -21,9 +20,9 @@ func HTTPStripUriMiddleware() gin.HandlerFunc {
 		serviceDetail := serverInterface.(*dao.ServiceDetail)
 
 		if serviceDetail.HTTPRule.RuleType == public.HTTPRuleTypePrefixURL && serviceDetail.HTTPRule.NeedStripUri == 1 {
-			fmt.Println("替换前Path", c.Request.URL.Path)
+			//fmt.Println("替换前Path", c.Request.URL.Path)
 			c.Request.URL.Path = strings.Replace(c.Request.URL.Path, serviceDetail.HTTPRule.Rule, "", 1)
-			fmt.Println("替换后Path", c.Request.URL.Path)
+			//fmt.Println("替换后Path", c.Request.URL.Path)
 		}
 		c.Next()
 	}
