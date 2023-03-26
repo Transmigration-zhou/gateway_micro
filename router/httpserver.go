@@ -12,7 +12,7 @@ import (
 var HttpSrvHandler *http.Server
 
 func HttpServerRun() {
-	gin.SetMode(lib.ConfBase.DebugMode)
+	gin.SetMode(lib.GetStringConf("base.base.debug_mode"))
 	r := InitRouter()
 	HttpSrvHandler = &http.Server{
 		Addr:           lib.GetStringConf("base.http.addr"),

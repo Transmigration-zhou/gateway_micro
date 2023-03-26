@@ -5,7 +5,6 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"encoding/hex"
-	"flag"
 	"fmt"
 	dlog "gateway-micro/common/log"
 	"io/ioutil"
@@ -35,15 +34,12 @@ func Init(configPath string) error {
 
 // InitModule 模块初始化
 func InitModule(configPath string, modules []string) error {
-	conf := flag.String("config", configPath, "input config file like ./conf/dev/")
-	flag.Parse()
-	if *conf == "" {
-		flag.Usage()
-		os.Exit(1)
+	if configPath == "" {
+		configPath = "./conf/dev/"
 	}
 
 	log.Println("------------------------------------------------------------------------")
-	log.Printf("[INFO]  config=%s\n", *conf)
+	log.Printf("[INFO]  config=%s\n", configPath)
 	log.Printf("[INFO] %s\n", " start loading resources.")
 
 	// 设置ip信息，优先设置便于日志打印
@@ -53,7 +49,7 @@ func InitModule(configPath string, modules []string) error {
 	}
 
 	// 解析配置文件目录
-	if err := ParseConfPath(*conf); err != nil {
+	if err := ParseConfPath(configPath); err != nil {
 		return err
 	}
 
