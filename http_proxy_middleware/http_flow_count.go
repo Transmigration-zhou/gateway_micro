@@ -2,12 +2,10 @@ package http_proxy_middleware
 
 import (
 	"errors"
-	"fmt"
 	"gateway-micro/dao"
 	"gateway-micro/middleware"
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 // HTTPFlowCountMiddleware 流量统计中间件
@@ -28,8 +26,8 @@ func HTTPFlowCountMiddleware() gin.HandlerFunc {
 			return
 		}
 		totalCounter.Increase()
-		dayCount, _ := totalCounter.GetDayData(time.Now())
-		fmt.Printf("totalCounter QPS:%v, dayCount:%v\n", totalCounter.QPS, dayCount)
+		//dayCount, _ := totalCounter.GetDayData(time.Now())
+		//fmt.Printf("totalCounter QPS:%v, dayCount:%v\n", totalCounter.QPS, dayCount)
 
 		serviceCounter, err := public.FlowCounterHandler.GetCounter(public.FlowServicePrefix + serviceDetail.Info.ServiceName)
 		if err != nil {
@@ -38,8 +36,8 @@ func HTTPFlowCountMiddleware() gin.HandlerFunc {
 			return
 		}
 		serviceCounter.Increase()
-		dayServiceCount, _ := serviceCounter.GetDayData(time.Now())
-		fmt.Printf("serviceCounter QPS:%v, dayCount:%v\n", serviceCounter.QPS, dayServiceCount)
+		//dayServiceCount, _ := serviceCounter.GetDayData(time.Now())
+		//fmt.Printf("serviceCounter QPS:%v, dayCount:%v\n", serviceCounter.QPS, dayServiceCount)
 
 		c.Next()
 	}

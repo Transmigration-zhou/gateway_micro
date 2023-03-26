@@ -2,7 +2,6 @@ package dao
 
 import (
 	"errors"
-	"fmt"
 	"gateway-micro/common/lib"
 	"gateway-micro/dto"
 	"gateway-micro/public"
@@ -82,7 +81,7 @@ func (s *ServiceManager) HTTPAccessMode(c *gin.Context) (*ServiceDetail, error) 
 	//path c.Request.URL.Path
 	host := c.Request.Host
 	host = host[0:strings.Index(host, ":")]
-	fmt.Println("host:", host)
+	//fmt.Println("host:", host)
 	path := c.Request.URL.Path
 	for _, serviceItem := range s.ServiceSlice {
 		if serviceItem.Info.LoadType != public.LoadTypeHTTP {
