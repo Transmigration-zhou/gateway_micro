@@ -1,7 +1,7 @@
 package http_proxy_router
 
 import (
-	"gateway-micro/http_proxy_midddleware"
+	"gateway-micro/http_proxy_middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +14,9 @@ func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 		})
 	})
 	router.Use(
-		http_proxy_midddleware.HTTPAccessModeMiddleware(),
-		http_proxy_midddleware.HTTPReverseProxyMiddleware(),
+		http_proxy_middleware.HTTPAccessModeMiddleware(),
+		http_proxy_middleware.HTTPHeaderTransferMiddleware(),
+		http_proxy_middleware.HTTPReverseProxyMiddleware(),
 	)
 	return router
 }

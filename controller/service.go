@@ -311,7 +311,7 @@ func (service *ServiceController) ServiceAddHTTP(c *gin.Context) {
 		NeedStripUri:   params.NeedStripUri,
 		NeedWebsocket:  params.NeedWebsocket,
 		UrlRewrite:     params.UrlRewrite,
-		HeaderTransfor: params.HeaderTransfor,
+		HeaderTransfer: params.HeaderTransfer,
 	}
 	if err := httpRule.Save(c, tx); err != nil {
 		tx.Rollback()
@@ -403,7 +403,7 @@ func (service *ServiceController) ServiceUpdateHTTP(c *gin.Context) {
 	httpRule.NeedStripUri = params.NeedStripUri
 	httpRule.NeedWebsocket = params.NeedWebsocket
 	httpRule.UrlRewrite = params.UrlRewrite
-	httpRule.HeaderTransfor = params.HeaderTransfor
+	httpRule.HeaderTransfer = params.HeaderTransfer
 
 	if err := httpRule.Updates(c, tx); err != nil {
 		tx.Rollback()
@@ -685,7 +685,7 @@ func (service *ServiceController) ServiceAddGrpc(c *gin.Context) {
 	grpcRule := &dao.GrpcRule{
 		ServiceID:      serviceModel.ID,
 		Port:           params.Port,
-		HeaderTransfor: params.HeaderTransfor,
+		HeaderTransfer: params.HeaderTransfer,
 	}
 	if err := grpcRule.Save(c, tx); err != nil {
 		tx.Rollback()

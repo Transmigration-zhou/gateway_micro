@@ -67,14 +67,22 @@ func TranslationMiddleware() gin.HandlerFunc {
 				}
 				return true
 			})
-			val.RegisterValidation("valid_header_transfor", func(fl validator.FieldLevel) bool {
+			val.RegisterValidation("valid_header_transfer", func(fl validator.FieldLevel) bool {
 				if fl.Field().String() == "" {
 					return true
 				}
 				for _, s := range strings.Split(fl.Field().String(), ",") {
-					if len(strings.Split(s, " ")) != 3 {
-						return false
+					split := strings.Split(s, " ")
+					if split[0] == "add" && len(split) == 3 {
+						continue
 					}
+					if split[0] == "del" && len(split) == 2 {
+						continue
+					}
+					if split[0] == "edit" && len(split) == 2 {
+						continue
+					}
+					return false
 				}
 				return true
 			})
@@ -132,10 +140,10 @@ func TranslationMiddleware() gin.HandlerFunc {
 				t, _ := ut.T("valid_url_rewrite", fe.Field())
 				return t
 			})
-			val.RegisterTranslation("valid_header_transfor", trans, func(ut ut.Translator) error {
-				return ut.Add("valid_header_transfor", "{0} 不符合输入格式", true)
+			val.RegisterTranslation("valid_header_transfer", trans, func(ut ut.Translator) error {
+				return ut.Add("valid_header_transfer", "{0} 不符合输入格式", true)
 			}, func(ut ut.Translator, fe validator.FieldError) string {
-				t, _ := ut.T("valid_header_transfor", fe.Field())
+				t, _ := ut.T("valid_header_transfer", fe.Field())
 				return t
 			})
 			val.RegisterTranslation("valid_ip_list", trans, func(ut ut.Translator) error {

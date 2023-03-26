@@ -1051,7 +1051,7 @@
         "dao.GrpcRule": {
             "type": "object",
             "properties": {
-                "header_transfor": {
+                "header_transfer": {
                     "type": "string"
                 },
                 "id": {
@@ -1068,7 +1068,7 @@
         "dao.HttpRule": {
             "type": "object",
             "properties": {
-                "header_transfor": {
+                "header_transfer": {
                     "type": "string"
                 },
                 "id": {
@@ -1402,7 +1402,7 @@
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""
@@ -1479,7 +1479,7 @@
                     "type": "integer",
                     "minimum": 0
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header转换",
                     "type": "string",
                     "example": ""
@@ -1608,7 +1608,7 @@
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""
@@ -1766,7 +1766,7 @@
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""
@@ -1848,7 +1848,7 @@
                     "type": "integer",
                     "minimum": 0
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header转换",
                     "type": "string",
                     "example": ""
@@ -1984,7 +1984,7 @@
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""

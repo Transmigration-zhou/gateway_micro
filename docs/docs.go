@@ -1062,7 +1062,7 @@ const docTemplate = `{
         "dao.GrpcRule": {
             "type": "object",
             "properties": {
-                "header_transfor": {
+                "header_transfer": {
                     "type": "string"
                 },
                 "id": {
@@ -1079,7 +1079,7 @@ const docTemplate = `{
         "dao.HttpRule": {
             "type": "object",
             "properties": {
-                "header_transfor": {
+                "header_transfer": {
                     "type": "string"
                 },
                 "id": {
@@ -1413,7 +1413,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""
@@ -1490,7 +1490,7 @@ const docTemplate = `{
                     "type": "integer",
                     "minimum": 0
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header转换",
                     "type": "string",
                     "example": ""
@@ -1619,7 +1619,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""
@@ -1777,7 +1777,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""
@@ -1859,7 +1859,7 @@ const docTemplate = `{
                     "type": "integer",
                     "minimum": 0
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header转换",
                     "type": "string",
                     "example": ""
@@ -1995,7 +1995,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": ""
                 },
-                "header_transfor": {
+                "header_transfer": {
                     "description": "header头转换",
                     "type": "string",
                     "example": ""

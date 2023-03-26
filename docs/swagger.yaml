@@ -20,7 +20,7 @@ definitions:
     type: object
   dao.GrpcRule:
     properties:
-      header_transfor:
+      header_transfer:
         type: string
       id:
         type: integer
@@ -31,7 +31,7 @@ definitions:
     type: object
   dao.HttpRule:
     properties:
-      header_transfor:
+      header_transfer:
         type: string
       id:
         type: integer
@@ -250,7 +250,7 @@ definitions:
         description: 禁用IP列表
         example: ""
         type: string
-      header_transfor:
+      header_transfer:
         description: header头转换
         example: ""
         type: string
@@ -311,7 +311,7 @@ definitions:
         description: 客户端ip限流
         minimum: 0
         type: integer
-      header_transfor:
+      header_transfer:
         description: header转换
         example: ""
         type: string
@@ -415,7 +415,7 @@ definitions:
         description: 禁用IP列表
         example: ""
         type: string
-      header_transfor:
+      header_transfer:
         description: header头转换
         example: ""
         type: string
@@ -533,7 +533,7 @@ definitions:
         description: 禁用IP列表
         example: ""
         type: string
-      header_transfor:
+      header_transfer:
         description: header头转换
         example: ""
         type: string
@@ -598,7 +598,7 @@ definitions:
         description: 客户端ip限流
         minimum: 0
         type: integer
-      header_transfor:
+      header_transfer:
         description: header转换
         example: ""
         type: string
@@ -708,7 +708,7 @@ definitions:
         description: 禁用IP列表
         example: ""
         type: string
-      header_transfor:
+      header_transfer:
         description: header头转换
         example: ""
         type: string
