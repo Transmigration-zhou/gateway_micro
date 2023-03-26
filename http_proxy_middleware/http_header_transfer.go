@@ -17,8 +17,8 @@ func HTTPHeaderTransferMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 		serviceDetail := serverInterface.(*dao.ServiceDetail)
+
 		for _, item := range strings.Split(serviceDetail.HTTPRule.HeaderTransfer, ",") {
 			items := strings.Split(item, " ")
 			if len(items) == 3 && (items[0] == "add" || items[0] == "edit") {

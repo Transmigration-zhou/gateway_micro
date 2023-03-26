@@ -100,11 +100,6 @@ func (l *LoadBalancer) GetLoadBalancer(service *ServiceDetail) (load_balance.Loa
 		}
 	}
 
-	prefix := ""
-	if service.HTTPRule.RuleType == public.HTTPRuleTypePrefixURL {
-		prefix = service.HTTPRule.Rule
-	}
-
 	ipList := service.LoadBalance.GetIpListByModel()
 	weightList := service.LoadBalance.GetWeightListByModel()
 	ipConf := map[string]string{}
@@ -112,7 +107,7 @@ func (l *LoadBalancer) GetLoadBalancer(service *ServiceDetail) (load_balance.Loa
 		ipConf[ipItem] = weightList[ipIndex]
 	}
 
-	mConf, err := load_balance.NewLoadBalanceCheckConf(fmt.Sprintf("%s://%s%s", schema, "%s", prefix), ipConf)
+	mConf, err := load_balance.NewLoadBalanceCheckConf(fmt.Sprintf("%s://%s", schema, "%s"), ipConf)
 	if err != nil {
 		return nil, err
 	}
