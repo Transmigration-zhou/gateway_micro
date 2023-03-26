@@ -92,15 +92,22 @@ func (service *ServiceController) ServiceList(c *gin.Context) {
 		if serviceDetail.Info.LoadType == public.LoadTypeGRPC {
 			serviceAddr = fmt.Sprintf("%s:%d", clusterIp, serviceDetail.GRPCRule.Port)
 		}
+
 		ipList := serviceDetail.LoadBalance.GetIpListByModel()
+		counter, err := public.FlowCounterHandler.GetCounter(public.FlowServicePrefix + listItem.ServiceName)
+		if err != nil {
+			middleware.ResponseError(c, 2004, err)
+			return
+		}
+
 		outItem := dto.ServiceListItemOutput{
 			ID:          listItem.ID,
 			ServiceName: listItem.ServiceName,
 			ServiceDesc: listItem.ServiceDesc,
 			LoadType:    listItem.LoadType,
 			ServiceAddr: serviceAddr,
-			Qps:         0,
-			Qpd:         0,
+			Qps:         counter.QPS,
+			Qpd:         counter.TotalCount,
 			TotalNode:   len(ipList),
 		}
 		outList = append(outList, outItem)
@@ -204,41 +211,45 @@ func (service *ServiceController) ServiceStatistics(c *gin.Context) {
 		return
 	}
 
-	//db, err := lib.GetGormPool("default")
-	//if err != nil {
-	//	middleware.ResponseError(c, 2001, err)
-	//	return
-	//}
-	//
-	//serviceInfo := &dao.ServiceInfo{ID: params.ID}
-	//serviceInfo, err = serviceInfo.First(c, db, serviceInfo)
-	//if err != nil {
-	//	middleware.ResponseError(c, 2002, err)
-	//	return
-	//}
-	//
-	//serviceDetail, err := serviceInfo.ServiceDetail(c, db, serviceInfo)
-	//if err != nil {
-	//	middleware.ResponseError(c, 2003, err)
-	//	return
-	//}
-	//
-	//counter, err := public.FlowCounterHandler.GetCounter(public.FlowServicePrefix + serviceDetail.Info.ServiceName)
-	//if err != nil {
-	//	middleware.ResponseError(c, 2004, err)
-	//	return
-	//}
+	db, err := lib.GetGormPool("default")
+	if err != nil {
+		middleware.ResponseError(c, 2001, err)
+		return
+	}
+
+	serviceInfo := &dao.ServiceInfo{ID: params.ID}
+	serviceInfo, err = serviceInfo.First(c, db, serviceInfo)
+	if err != nil {
+		middleware.ResponseError(c, 2002, err)
+		return
+	}
+
+	serviceDetail, err := serviceInfo.ServiceDetail(c, db, serviceInfo)
+	if err != nil {
+		middleware.ResponseError(c, 2003, err)
+		return
+	}
+
+	counter, err := public.FlowCounterHandler.GetCounter(public.FlowServicePrefix + serviceDetail.Info.ServiceName)
+	if err != nil {
+		middleware.ResponseError(c, 2004, err)
+		return
+	}
 
 	var todayList []int64
 	todayTime := time.Now()
 	for i := 0; i <= todayTime.Hour(); i++ {
-		todayList = append(todayList, 0)
+		dateTime := time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), i, 0, 0, 0, lib.TimeLocation)
+		hourData, _ := counter.GetHourData(dateTime)
+		todayList = append(todayList, hourData)
 	}
 
 	var yesterdayList []int64
-	//yesterdayTime := todayTime.Add(-1 * time.Duration(time.Hour*24))
+	yesterdayTime := todayTime.Add(-24 * time.Hour)
 	for i := 0; i <= 23; i++ {
-		yesterdayList = append(yesterdayList, 0)
+		dateTime := time.Date(yesterdayTime.Year(), yesterdayTime.Month(), yesterdayTime.Day(), i, 0, 0, 0, lib.TimeLocation)
+		hourData, _ := counter.GetHourData(dateTime)
+		yesterdayList = append(yesterdayList, hourData)
 	}
 
 	middleware.ResponseSuccess(c, &dto.ServiceStatisticsOutput{

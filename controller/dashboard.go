@@ -49,11 +49,17 @@ func (dashboard *DashboardController) PanelGroupData(c *gin.Context) {
 		return
 	}
 
+	counter, err := public.FlowCounterHandler.GetCounter(public.FlowTotal)
+	if err != nil {
+		middleware.ResponseError(c, 2003, err)
+		return
+	}
+
 	out := &dto.PanelGroupDataOutput{
 		ServiceNum:      serviceNum,
 		TenantNum:       tenantNum,
-		TodayRequestNum: 0,
-		CurrentQPS:      0,
+		TodayRequestNum: counter.TotalCount,
+		CurrentQPS:      counter.QPS,
 	}
 	middleware.ResponseSuccess(c, out)
 }
@@ -67,16 +73,26 @@ func (dashboard *DashboardController) PanelGroupData(c *gin.Context) {
 // @Success      200		{object}	middleware.Response{data=dto.DashboardStatisticsOutput}
 // @Router       /dashboard/flow_statistics	[get]
 func (dashboard *DashboardController) FlowStatistics(c *gin.Context) {
+	counter, err := public.FlowCounterHandler.GetCounter(public.FlowTotal)
+	if err != nil {
+		middleware.ResponseError(c, 2001, err)
+		return
+	}
+
 	var todayList []int64
 	todayTime := time.Now()
 	for i := 0; i <= todayTime.Hour(); i++ {
-		todayList = append(todayList, 0)
+		dateTime := time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), i, 0, 0, 0, lib.TimeLocation)
+		hourData, _ := counter.GetHourData(dateTime)
+		todayList = append(todayList, hourData)
 	}
 
 	var yesterdayList []int64
-	//yesterdayTime := todayTime.Add(-1 * time.Duration(time.Hour*24))
+	yesterdayTime := todayTime.Add(-24 * time.Hour)
 	for i := 0; i <= 23; i++ {
-		yesterdayList = append(yesterdayList, 0)
+		dateTime := time.Date(yesterdayTime.Year(), yesterdayTime.Month(), yesterdayTime.Day(), i, 0, 0, 0, lib.TimeLocation)
+		hourData, _ := counter.GetHourData(dateTime)
+		yesterdayList = append(yesterdayList, hourData)
 	}
 
 	middleware.ResponseSuccess(c, &dto.DashboardStatisticsOutput{
