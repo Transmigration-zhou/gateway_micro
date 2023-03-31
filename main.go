@@ -36,7 +36,7 @@ func main() {
 		lib.InitModule(*config, []string{"base", "mysql", "redis"})
 		defer lib.Destroy()
 		dao.ServiceManagerHandler.LoadOnce()
-		//dao.AppManagerHandler.LoadOnce()
+		dao.TenantManagerHandler.LoadOnce()
 
 		go func() {
 			http_proxy_router.HttpProxyRun()

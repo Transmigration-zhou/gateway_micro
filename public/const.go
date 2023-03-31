@@ -18,6 +18,9 @@ const (
 	FlowTotal         = "flow_total"
 	FlowServicePrefix = "flow_service_"
 	FlowTenantPrefix  = "flow_tenant_"
+
+	JwtSignKey = "my_sign_key"
+	JwtExpires = 60 * 60
 )
 
 var LoadTypeMap = map[int]string{

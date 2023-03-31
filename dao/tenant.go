@@ -1,9 +1,12 @@
 package dao
 
 import (
+	"gateway-micro/common/lib"
 	"gateway-micro/dto"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"net/http/httptest"
+	"sync"
 	"time"
 )
 
@@ -51,4 +54,57 @@ func (t *Tenant) First(c *gin.Context, db *gorm.DB, search *Tenant) (*Tenant, er
 
 func (t *Tenant) Save(c *gin.Context, db *gorm.DB) error {
 	return db.WithContext(c).Save(t).Error
+}
+
+var TenantManagerHandler *TenantManager
+
+func init() {
+	TenantManagerHandler = NewTenantManager()
+}
+
+type TenantManager struct {
+	TenantMap   map[string]*Tenant
+	TenantSlice []*Tenant
+	Lock        sync.Mutex
+	init        sync.Once
+	err         error
+}
+
+func NewTenantManager() *TenantManager {
+	return &TenantManager{
+		TenantMap:   map[string]*Tenant{},
+		TenantSlice: []*Tenant{},
+		Lock:        sync.Mutex{},
+		init:        sync.Once{},
+	}
+}
+
+func (s *TenantManager) LoadOnce() error {
+	s.init.Do(func() {
+		tenantInfo := &Tenant{}
+		c, _ := gin.CreateTestContext(httptest.NewRecorder())
+		db, err := lib.GetGormPool("default")
+		if err != nil {
+			s.err = err
+			return
+		}
+		params := &dto.TenantListInput{PageNo: 1, PageSize: 99999}
+		list, _, err := tenantInfo.PageList(c, db, params)
+		if err != nil {
+			s.err = err
+			return
+		}
+		s.Lock.Lock()
+		defer s.Lock.Unlock()
+		for _, listItem := range list {
+			tmpItem := listItem
+			s.TenantMap[listItem.TenantID] = &tmpItem
+			s.TenantSlice = append(s.TenantSlice, &tmpItem)
+		}
+	})
+	return s.err
+}
+
+func (s *TenantManager) GetTenantList() []*Tenant {
+	return s.TenantSlice
 }

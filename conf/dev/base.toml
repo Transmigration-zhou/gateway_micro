@@ -17,7 +17,7 @@ allow_ip = [                        # 白名单ip列表
 [log]
 log_level = "trace"         #日志打印最低级别
 [log.file_writer]           #文件写入配置
-on = true
+on = false
 log_path = "./logs/gateway_micro.inf.log"
 rotate_log_path = "./logs/gateway_micro.inf.log.%Y%M%D%H"
 wf_log_path = "./logs/gateway_micro.wf.log"

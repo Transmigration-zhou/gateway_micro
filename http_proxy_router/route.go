@@ -1,12 +1,14 @@
 package http_proxy_router
 
 import (
+	"gateway-micro/controller"
 	"gateway-micro/http_proxy_middleware"
+	"gateway-micro/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
-	//优化点1：gin.Default()使用Logger(), Recovery()中间件，会打印请求日志，消耗性能IO
+	//优化点：gin.Default()使用Logger(), Recovery()中间件，会打印请求日志，消耗性能IO
 	//router := gin.Default()
 	router := gin.New()
 	router.Use(middlewares...)
@@ -15,10 +17,20 @@ func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 			"message": "pong",
 		})
 	})
+
+	oAuth := router.Group("/oauth")
+	oAuth.Use(
+		middleware.TranslationMiddleware(),
+	)
+	{
+		controller.OAuthRegister(oAuth)
+	}
+
 	router.Use(
 		http_proxy_middleware.HTTPAccessModeMiddleware(),
 		http_proxy_middleware.HTTPFlowCountMiddleware(),
 		http_proxy_middleware.HTTPFlowLimitMiddleware(),
+		http_proxy_middleware.HTTPJwtAuthTokenMiddleware(),
 		http_proxy_middleware.HTTPWhiteListMiddleware(),
 		http_proxy_middleware.HTTPBlackListMiddleware(),
 		http_proxy_middleware.HTTPHeaderTransferMiddleware(),
@@ -26,5 +38,6 @@ func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 		http_proxy_middleware.HTTPUrlRewriteMiddleware(),
 		http_proxy_middleware.HTTPReverseProxyMiddleware(),
 	)
+
 	return router
 }
