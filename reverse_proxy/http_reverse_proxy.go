@@ -3,7 +3,6 @@ package reverse_proxy
 import (
 	"bytes"
 	"compress/gzip"
-	"fmt"
 	"gateway-micro/middleware"
 	"gateway-micro/reverse_proxy/load_balance"
 	"github.com/gin-gonic/gin"
@@ -19,7 +18,7 @@ func NewLoadBalanceReverseProxy(c *gin.Context, lb load_balance.LoadBalance, tra
 	//请求协调者
 	director := func(req *http.Request) {
 		nextAddr, err := lb.Get(req.URL.String())
-		fmt.Println("nextAddr:", nextAddr)
+		//fmt.Println("nextAddr:", nextAddr)
 		if err != nil {
 			panic("get next addr fail")
 		}

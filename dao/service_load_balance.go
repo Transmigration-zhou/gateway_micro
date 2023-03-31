@@ -157,18 +157,6 @@ func (t *Transporter) GetTransporter(service *ServiceDetail) (*http.Transport, e
 		}
 	}
 
-	//if service.LoadBalance.UpstreamConnectTimeout == 0 {
-	//	service.LoadBalance.UpstreamConnectTimeout = 30
-	//}
-	//if service.LoadBalance.UpstreamMaxIdle == 0 {
-	//	service.LoadBalance.UpstreamMaxIdle = 100
-	//}
-	//if service.LoadBalance.UpstreamIdleTimeout == 0 {
-	//	service.LoadBalance.UpstreamIdleTimeout = 90
-	//}
-	//if service.LoadBalance.UpstreamHeaderTimeout == 0 {
-	//	service.LoadBalance.UpstreamHeaderTimeout = 30
-	//}
 	trans := &http.Transport{
 		DialContext: (&net.Dialer{
 			Timeout: time.Duration(service.LoadBalance.UpstreamConnectTimeout) * time.Second,

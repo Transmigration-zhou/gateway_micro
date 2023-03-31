@@ -6,7 +6,9 @@ import (
 )
 
 func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
-	router := gin.Default()
+	//优化点1：gin.Default()使用Logger(), Recovery()中间件，会打印请求日志，消耗性能IO
+	//router := gin.Default()
+	router := gin.New()
 	router.Use(middlewares...)
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
