@@ -23,7 +23,8 @@ func HTTPFlowLimitMiddleware() gin.HandlerFunc {
 		if serviceDetail.AccessControl.ServiceFlowLimit > 0 {
 			serviceLimiter, err := public.FlowLimiterHandler.GetLimiter(
 				public.FlowServicePrefix+serviceDetail.Info.ServiceName,
-				float64(serviceDetail.AccessControl.ServiceFlowLimit))
+				float64(serviceDetail.AccessControl.ServiceFlowLimit),
+			)
 			if err != nil {
 				middleware.ResponseError(c, 5001, err)
 				c.Abort()
@@ -39,7 +40,8 @@ func HTTPFlowLimitMiddleware() gin.HandlerFunc {
 		if serviceDetail.AccessControl.ClientIpFlowLimit > 0 {
 			clientLimiter, err := public.FlowLimiterHandler.GetLimiter(
 				public.FlowServicePrefix+serviceDetail.Info.ServiceName+"_"+c.ClientIP(),
-				float64(serviceDetail.AccessControl.ClientIpFlowLimit))
+				float64(serviceDetail.AccessControl.ClientIpFlowLimit),
+			)
 			if err != nil {
 				middleware.ResponseError(c, 5003, err)
 				c.Abort()
