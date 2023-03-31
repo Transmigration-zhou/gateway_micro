@@ -49,17 +49,22 @@ func (tenant *TenantController) TenantList(c *gin.Context) {
 	}
 
 	var outputList []dto.TenantListItemOutput
-	for _, item := range list {
+	for _, tenant := range list {
+		counter, err := public.FlowCounterHandler.GetCounter(public.FlowTenantPrefix + tenant.TenantID)
+		if err != nil {
+			middleware.ResponseError(c, 2002, err)
+			return
+		}
 		outputList = append(outputList, dto.TenantListItemOutput{
-			ID:       item.ID,
-			TenantID: item.TenantID,
-			Name:     item.Name,
-			Secret:   item.Secret,
-			WhiteIPS: item.WhiteIPS,
-			Qps:      item.Qps,
-			Qpd:      item.Qpd,
-			RealQps:  0,
-			RealQpd:  0,
+			ID:       tenant.ID,
+			TenantID: tenant.TenantID,
+			Name:     tenant.Name,
+			Secret:   tenant.Secret,
+			WhiteIPS: tenant.WhiteIPS,
+			Qps:      tenant.Qps,
+			Qpd:      tenant.Qpd,
+			RealQps:  counter.QPS,
+			RealQpd:  counter.TotalCount,
 		})
 	}
 	output := dto.TenantListOutput{
@@ -111,16 +116,35 @@ func (tenant *TenantController) TenantStatistics(c *gin.Context) {
 		return
 	}
 
+	search := &dao.Tenant{
+		ID: params.ID,
+	}
+	tenantInfo, err := search.First(c, lib.GORMDefaultPool, search)
+	if err != nil {
+		middleware.ResponseError(c, 2001, err)
+		return
+	}
+
+	counter, err := public.FlowCounterHandler.GetCounter(public.FlowTenantPrefix + tenantInfo.TenantID)
+	if err != nil {
+		middleware.ResponseError(c, 2002, err)
+		return
+	}
+
 	var todayList []int64
 	todayTime := time.Now()
 	for i := 0; i <= todayTime.Hour(); i++ {
-		todayList = append(todayList, 0)
+		dateTime := time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), i, 0, 0, 0, lib.TimeLocation)
+		hourData, _ := counter.GetHourData(dateTime)
+		todayList = append(todayList, hourData)
 	}
 
 	var yesterdayList []int64
-	//yesterdayTime := todayTime.Add(-1 * time.Duration(time.Hour*24))
+	yesterdayTime := todayTime.Add(-24 * time.Hour)
 	for i := 0; i <= 23; i++ {
-		yesterdayList = append(yesterdayList, 0)
+		dateTime := time.Date(yesterdayTime.Year(), yesterdayTime.Month(), yesterdayTime.Day(), i, 0, 0, 0, lib.TimeLocation)
+		hourData, _ := counter.GetHourData(dateTime)
+		yesterdayList = append(yesterdayList, hourData)
 	}
 
 	middleware.ResponseSuccess(c, &dto.TenantStatisticsOutput{

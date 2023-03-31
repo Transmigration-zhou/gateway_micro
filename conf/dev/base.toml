@@ -2,7 +2,7 @@
 
 [base]
 debug_mode = "debug"
-time_location = "Asia/Chongqing"
+time_location = "Asia/Shanghai"
 
 [http]
 addr = ":8880"                       # 监听地址, default ":8700"
