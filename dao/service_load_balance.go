@@ -94,9 +94,9 @@ func (l *LoadBalancer) GetLoadBalancer(service *ServiceDetail) (load_balance.Loa
 
 	schema := ""
 	if service.Info.LoadType == public.LoadTypeHTTP {
-		schema = "http"
+		schema = "http://"
 		if service.HTTPRule.NeedHttps == 1 {
-			schema = "https"
+			schema = "https://"
 		}
 	}
 
@@ -107,7 +107,7 @@ func (l *LoadBalancer) GetLoadBalancer(service *ServiceDetail) (load_balance.Loa
 		ipConf[ipItem] = weightList[ipIndex]
 	}
 
-	mConf, err := load_balance.NewLoadBalanceCheckConf(fmt.Sprintf("%s://%s", schema, "%s"), ipConf)
+	mConf, err := load_balance.NewLoadBalanceCheckConf(fmt.Sprintf("%s%s", schema, "%s"), ipConf)
 	if err != nil {
 		return nil, err
 	}

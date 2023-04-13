@@ -100,3 +100,14 @@ func (s *ServiceManager) HTTPAccessMode(c *gin.Context) (*ServiceDetail, error) 
 	}
 	return nil, errors.New("not matched service")
 }
+
+func (s *ServiceManager) GetServiceList(loadType int) []*ServiceDetail {
+	var list []*ServiceDetail
+	for _, serverItem := range s.ServiceSlice {
+		tempItem := serverItem
+		if tempItem.Info.LoadType == loadType {
+			list = append(list, tempItem)
+		}
+	}
+	return list
+}

@@ -6,6 +6,7 @@ import (
 	"gateway-micro/dao"
 	"gateway-micro/http_proxy_router"
 	"gateway-micro/router"
+	"gateway-micro/tcp_proxy_router"
 	"os"
 	"os/signal"
 	"syscall"
@@ -39,15 +40,20 @@ func main() {
 		dao.TenantManagerHandler.LoadOnce()
 
 		go func() {
+			tcp_proxy_router.TcpProxyRun()
+		}()
+		go func() {
 			http_proxy_router.HttpProxyRun()
 		}()
 		go func() {
 			http_proxy_router.HttpsProxyRun()
 		}()
+
 		quit := make(chan os.Signal)
 		signal.Notify(quit, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
 		<-quit
 
+		tcp_proxy_router.TcpProxyStop()
 		http_proxy_router.HttpProxyStop()
 		http_proxy_router.HttpsProxyStop()
 	}
