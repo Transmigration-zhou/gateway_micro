@@ -1,8 +1,8 @@
 package public
 
 import (
-	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/pkg/errors"
 )
 
 func JwtDecode(tokenString string) (*jwt.RegisteredClaims, error) {

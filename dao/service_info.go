@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"errors"
 	"gateway-micro/dto"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"time"
 )

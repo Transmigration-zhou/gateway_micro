@@ -3,8 +3,8 @@ package log
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"os"
 	"path"
 	"time"

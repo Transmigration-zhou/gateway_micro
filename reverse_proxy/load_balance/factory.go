@@ -14,7 +14,7 @@ func LoadBalanceFactory(lbType LbType) LoadBalance {
 	case LbRandom:
 		return &RandomBalance{}
 	case LbConsistentHash:
-		return NewConsistentHashBanlance(10, nil)
+		return NewConsistentHashBalance(10, nil)
 	case LbRoundRobin:
 		return &RoundRobinBalance{}
 	case LbWeightRoundRobin:
@@ -34,7 +34,7 @@ func LoadBalanceFactorWithConf(lbType LbType, mConf LoadBalanceConf) LoadBalance
 		lb.Update()
 		return lb
 	case LbConsistentHash:
-		lb := NewConsistentHashBanlance(10, nil)
+		lb := NewConsistentHashBalance(10, nil)
 		lb.SetConf(mConf)
 		mConf.Attach(lb)
 		lb.Update()

@@ -1,8 +1,8 @@
 package load_balance
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"math/rand"
 	"strings"
 )

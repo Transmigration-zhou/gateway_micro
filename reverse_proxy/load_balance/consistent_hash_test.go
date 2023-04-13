@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewConsistentHashBanlance(t *testing.T) {
-	rb := NewConsistentHashBanlance(10, nil)
+	rb := NewConsistentHashBalance(10, nil)
 	rb.Add("127.0.0.1:2003") //0
 	rb.Add("127.0.0.1:2004") //1
 	rb.Add("127.0.0.1:2005") //2

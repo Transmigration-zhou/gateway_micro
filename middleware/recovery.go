@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"errors"
 	"fmt"
 	"gateway-micro/common/lib"
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"runtime/debug"
 )
 

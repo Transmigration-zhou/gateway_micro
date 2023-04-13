@@ -1,6 +1,6 @@
 package log
 
-import "errors"
+import "github.com/pkg/errors"
 
 type ConfFileWriter struct {
 	On              bool   `toml:"On"`

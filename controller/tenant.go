@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"errors"
 	"gateway-micro/common/lib"
 	"gateway-micro/dao"
 	"gateway-micro/dto"
 	"gateway-micro/middleware"
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"time"
 )
 

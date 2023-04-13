@@ -1,11 +1,11 @@
 package dao
 
 import (
-	"errors"
 	"gateway-micro/common/lib"
 	"gateway-micro/dto"
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"net/http/httptest"
 	"strings"
 	"sync"

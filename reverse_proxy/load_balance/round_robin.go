@@ -1,8 +1,8 @@
 package load_balance
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"strings"
 )
 
@@ -44,13 +44,6 @@ func (r *RoundRobinBalance) SetConf(conf LoadBalanceConf) {
 }
 
 func (r *RoundRobinBalance) Update() {
-	//if conf, ok := r.conf.(*LoadBalanceZkConf); ok {
-	//	fmt.Println("Update get zk conf:", conf.GetConf())
-	//	r.rss = []string{}
-	//	for _, ip := range conf.GetConf() {
-	//		r.Add(strings.Split(ip, ",")...)
-	//	}
-	//}
 	if conf, ok := r.conf.(*LoadBalanceCheckConf); ok {
 		fmt.Println("Update get check conf:", conf.GetConf())
 		r.rss = nil

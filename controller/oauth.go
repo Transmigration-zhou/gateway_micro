@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/base64"
-	"errors"
 	"gateway-micro/common/lib"
 	"gateway-micro/dao"
 	"gateway-micro/dto"
@@ -10,6 +9,7 @@ import (
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/pkg/errors"
 	"strings"
 	"time"
 )

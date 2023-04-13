@@ -1,8 +1,8 @@
 package load_balance
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"hash/crc32"
 	"sort"
 	"strconv"
@@ -26,7 +26,7 @@ func (s UInt32Slice) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
 
-type ConsistentHashBanlance struct {
+type ConsistentHashBalance struct {
 	mux      sync.RWMutex
 	hash     Hash
 	replicas int               //复制因子
@@ -37,8 +37,8 @@ type ConsistentHashBanlance struct {
 	conf LoadBalanceConf
 }
 
-func NewConsistentHashBanlance(replicas int, fn Hash) *ConsistentHashBanlance {
-	m := &ConsistentHashBanlance{
+func NewConsistentHashBalance(replicas int, fn Hash) *ConsistentHashBalance {
+	m := &ConsistentHashBalance{
 		replicas: replicas,
 		hash:     fn,
 		hashMap:  make(map[uint32]string),
@@ -50,13 +50,13 @@ func NewConsistentHashBanlance(replicas int, fn Hash) *ConsistentHashBanlance {
 	return m
 }
 
-// 验证是否为空
-func (c *ConsistentHashBanlance) IsEmpty() bool {
+// IsEmpty 验证是否为空
+func (c *ConsistentHashBalance) IsEmpty() bool {
 	return len(c.keys) == 0
 }
 
 // Add 方法用来添加缓存节点，参数为节点key，比如使用IP
-func (c *ConsistentHashBanlance) Add(params ...string) error {
+func (c *ConsistentHashBalance) Add(params ...string) error {
 	if len(params) == 0 {
 		return errors.New("param len 1 at least")
 	}
@@ -75,7 +75,7 @@ func (c *ConsistentHashBanlance) Add(params ...string) error {
 }
 
 // Get 方法根据给定的对象获取最靠近它的那个节点
-func (c *ConsistentHashBanlance) Get(key string) (string, error) {
+func (c *ConsistentHashBalance) Get(key string) (string, error) {
 	if c.IsEmpty() {
 		return "", errors.New("node is empty")
 	}
@@ -93,11 +93,11 @@ func (c *ConsistentHashBanlance) Get(key string) (string, error) {
 	return c.hashMap[c.keys[idx]], nil
 }
 
-func (c *ConsistentHashBanlance) SetConf(conf LoadBalanceConf) {
+func (c *ConsistentHashBalance) SetConf(conf LoadBalanceConf) {
 	c.conf = conf
 }
 
-func (c *ConsistentHashBanlance) Update() {
+func (c *ConsistentHashBalance) Update() {
 	if conf, ok := c.conf.(*LoadBalanceCheckConf); ok {
 		fmt.Println("Update get check conf:", conf.GetConf())
 		c.keys = nil

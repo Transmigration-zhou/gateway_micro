@@ -1,8 +1,8 @@
 package load_balance
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"strconv"
 	"strings"
 )
@@ -73,13 +73,6 @@ func (r *WeightRoundRobinBalance) SetConf(conf LoadBalanceConf) {
 }
 
 func (r *WeightRoundRobinBalance) Update() {
-	//if conf, ok := r.conf.(*LoadBalanceZkConf); ok {
-	//	fmt.Println("WeightRoundRobinBalance get zk conf:", conf.GetConf())
-	//	r.rss = nil
-	//	for _, ip := range conf.GetConf() {
-	//		r.Add(strings.Split(ip, ",")...)
-	//	}
-	//}
 	if conf, ok := r.conf.(*LoadBalanceCheckConf); ok {
 		fmt.Println("WeightRoundRobinBalance get check conf:", conf.GetConf())
 		r.rss = nil

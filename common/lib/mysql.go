@@ -3,9 +3,9 @@ package lib
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -27,56 +27,56 @@ func InitDBPool(path string) error {
 	DBMapPool = map[string]*sql.DB{}
 	GORMMapPool = map[string]*gorm.DB{}
 	for confName, DbConf := range DbConfMap.List {
-		dbpool, err := sql.Open("mysql", DbConf.DataSourceName)
+		dpPool, err := sql.Open("mysql", DbConf.DataSourceName)
 		if err != nil {
 			return err
 		}
-		dbpool.SetMaxOpenConns(DbConf.MaxOpenConn)
-		dbpool.SetMaxIdleConns(DbConf.MaxIdleConn)
-		dbpool.SetConnMaxLifetime(time.Duration(DbConf.MaxConnLifeTime) * time.Second)
-		err = dbpool.Ping()
+		dpPool.SetMaxOpenConns(DbConf.MaxOpenConn)
+		dpPool.SetMaxIdleConns(DbConf.MaxIdleConn)
+		dpPool.SetConnMaxLifetime(time.Duration(DbConf.MaxConnLifeTime) * time.Second)
+		err = dpPool.Ping()
 		if err != nil {
 			return err
 		}
 
 		//gorm连接方式
-		dbGorm, err := gorm.Open(mysql.New(mysql.Config{Conn: dbpool}), &gorm.Config{
+		dbGorm, err := gorm.Open(mysql.New(mysql.Config{Conn: dpPool}), &gorm.Config{
 			Logger: &DefaultMysqlGormLogger,
 		})
 		if err != nil {
 			return err
 		}
-		DBMapPool[confName] = dbpool
+		DBMapPool[confName] = dpPool
 		GORMMapPool[confName] = dbGorm
 	}
 
 	//手动配置连接
-	if dbpool, err := GetDBPool("default"); err == nil {
-		DBDefaultPool = dbpool
+	if dpPool, err := GetDBPool("default"); err == nil {
+		DBDefaultPool = dpPool
 	}
-	if dbpool, err := GetGormPool("default"); err == nil {
-		GORMDefaultPool = dbpool
+	if dpPool, err := GetGormPool("default"); err == nil {
+		GORMDefaultPool = dpPool
 	}
 	return nil
 }
 
 func GetDBPool(name string) (*sql.DB, error) {
-	if dbpool, ok := DBMapPool[name]; ok {
-		return dbpool, nil
+	if dpPool, ok := DBMapPool[name]; ok {
+		return dpPool, nil
 	}
 	return nil, errors.New("get pool error")
 }
 
 func GetGormPool(name string) (*gorm.DB, error) {
-	if dbpool, ok := GORMMapPool[name]; ok {
-		return dbpool, nil
+	if dpPool, ok := GORMMapPool[name]; ok {
+		return dpPool, nil
 	}
 	return nil, errors.New("get pool error")
 }
 
 func CloseDB() error {
-	for _, dbpool := range DBMapPool {
-		dbpool.Close()
+	for _, dpPool := range DBMapPool {
+		dpPool.Close()
 	}
 	DBMapPool = make(map[string]*sql.DB)
 	GORMMapPool = make(map[string]*gorm.DB)
@@ -103,7 +103,7 @@ func DBPoolLogQuery(trace *TraceContext, sqlDb *sql.DB, query string, args ...in
 	return rows, err
 }
 
-// mysql 日志打印类型
+// DefaultMysqlGormLogger mysql 日志打印类型
 var DefaultMysqlGormLogger = MysqlGormLogger{
 	LogLevel:      logger.Info,
 	SlowThreshold: 200 * time.Millisecond,

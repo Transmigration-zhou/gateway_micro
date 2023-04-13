@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"errors"
 	"fmt"
 	"gateway-micro/common/lib"
 	"gateway-micro/dao"
@@ -9,6 +8,7 @@ import (
 	"gateway-micro/middleware"
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"strings"
 	"time"
 )

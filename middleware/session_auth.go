@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"errors"
 	"gateway-micro/public"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 func SessionAuthMiddleware() gin.HandlerFunc {

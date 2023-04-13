@@ -2,8 +2,8 @@ package lib
 
 import (
 	"context"
-	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 type Trace struct {

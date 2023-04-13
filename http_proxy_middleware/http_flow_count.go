@@ -1,11 +1,11 @@
 package http_proxy_middleware
 
 import (
-	"errors"
 	"gateway-micro/dao"
 	"gateway-micro/middleware"
 	"gateway-micro/public"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 // HTTPFlowCountMiddleware 流量统计中间件

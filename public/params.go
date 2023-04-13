@@ -1,10 +1,10 @@
 package public
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	"github.com/pkg/errors"
 	"strings"
 )
 

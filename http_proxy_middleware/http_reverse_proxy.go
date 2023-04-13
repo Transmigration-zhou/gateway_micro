@@ -1,11 +1,11 @@
 package http_proxy_middleware
 
 import (
-	"errors"
 	"gateway-micro/dao"
 	"gateway-micro/middleware"
 	"gateway-micro/reverse_proxy"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 // HTTPReverseProxyMiddleware 反向代理中间件

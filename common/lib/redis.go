@@ -1,9 +1,9 @@
 package lib
 
 import (
-	"errors"
 	"fmt"
 	"github.com/gomodule/redigo/redis"
+	"github.com/pkg/errors"
 	"math/rand"
 	"time"
 )
