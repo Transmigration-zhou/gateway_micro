@@ -2,7 +2,7 @@ package tcp_proxy_middleware
 
 import (
 	"context"
-	"gateway-micro/tcp_server"
+	s "gateway-micro/server_client_demo/tcp/server"
 	"math"
 	"net"
 )
@@ -45,7 +45,7 @@ func (c *TcpSliceRouterContext) Set(key, val interface{}) {
 }
 
 type TcpSliceRouterHandler struct {
-	coreFunc func(*TcpSliceRouterContext) tcp_server.TCPHandler
+	coreFunc func(*TcpSliceRouterContext) s.TCPHandler
 	router   *TcpSliceRouter
 }
 
@@ -58,7 +58,7 @@ func (w *TcpSliceRouterHandler) ServeTCP(ctx context.Context, conn net.Conn) {
 	c.Next()
 }
 
-func NewTcpSliceRouterHandler(coreFunc func(*TcpSliceRouterContext) tcp_server.TCPHandler, router *TcpSliceRouter) *TcpSliceRouterHandler {
+func NewTcpSliceRouterHandler(coreFunc func(*TcpSliceRouterContext) s.TCPHandler, router *TcpSliceRouter) *TcpSliceRouterHandler {
 	return &TcpSliceRouterHandler{
 		coreFunc: coreFunc,
 		router:   router,

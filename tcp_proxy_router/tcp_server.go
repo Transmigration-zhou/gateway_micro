@@ -6,12 +6,12 @@ import (
 	"gateway-micro/dao"
 	"gateway-micro/public"
 	"gateway-micro/reverse_proxy"
+	s "gateway-micro/server_client_demo/tcp/server"
 	"gateway-micro/tcp_proxy_middleware"
-	"gateway-micro/tcp_server"
 	"log"
 )
 
-var tcpServerList []*tcp_server.TcpServer
+var tcpServerList []*s.TcpServer
 
 func TcpProxyRun() {
 	serviceList := dao.ServiceManagerHandler.GetServiceList(public.LoadTypeTCP)
@@ -37,7 +37,7 @@ func TcpProxyRun() {
 
 			//构建回调handler
 			routerHandler := tcp_proxy_middleware.NewTcpSliceRouterHandler(
-				func(c *tcp_proxy_middleware.TcpSliceRouterContext) tcp_server.TCPHandler {
+				func(c *tcp_proxy_middleware.TcpSliceRouterContext) s.TCPHandler {
 					return reverse_proxy.NewTcpLoadBalanceReverseProxy(c, lb)
 				},
 				router,
@@ -45,14 +45,14 @@ func TcpProxyRun() {
 
 			baseCtx := context.WithValue(context.Background(), "service", serviceDetail)
 
-			tcpServer := &tcp_server.TcpServer{
+			tcpServer := &s.TcpServer{
 				Addr:    addr,
 				Handler: routerHandler,
 				BaseCtx: baseCtx,
 			}
 			tcpServerList = append(tcpServerList, tcpServer)
 			log.Printf("[INFO] TcpProxyRun %s\n", addr)
-			if err := tcpServer.ListenAndServe(); err != nil && err != tcp_server.ErrServerClosed {
+			if err := tcpServer.ListenAndServe(); err != nil && err != s.ErrServerClosed {
 				log.Fatalf("[ERROR] TcpProxyRun %s, err: %v\n", addr, err)
 			}
 		}(tempItem)
