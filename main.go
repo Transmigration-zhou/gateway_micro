@@ -4,6 +4,7 @@ import (
 	"flag"
 	"gateway-micro/common/lib"
 	"gateway-micro/dao"
+	"gateway-micro/grpc_proxy_router"
 	"gateway-micro/http_proxy_router"
 	"gateway-micro/router"
 	"gateway-micro/tcp_proxy_router"
@@ -43,6 +44,9 @@ func main() {
 			tcp_proxy_router.TcpProxyRun()
 		}()
 		go func() {
+			grpc_proxy_router.GrpcProxyRun()
+		}()
+		go func() {
 			http_proxy_router.HttpProxyRun()
 		}()
 		go func() {
@@ -54,6 +58,7 @@ func main() {
 		<-quit
 
 		tcp_proxy_router.TcpProxyStop()
+		grpc_proxy_router.GrpcProxyStop()
 		http_proxy_router.HttpProxyStop()
 		http_proxy_router.HttpsProxyStop()
 	}
