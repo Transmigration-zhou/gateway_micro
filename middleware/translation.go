@@ -79,7 +79,7 @@ func TranslationMiddleware() gin.HandlerFunc {
 					if split[0] == "del" && len(split) == 2 {
 						continue
 					}
-					if split[0] == "edit" && len(split) == 2 {
+					if split[0] == "edit" && len(split) == 3 {
 						continue
 					}
 					return false
