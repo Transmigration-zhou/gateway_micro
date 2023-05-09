@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// HTTPReverseProxyMiddleware 反向代理中间件
+// HTTPReverseProxyMiddleware 反向代理中间件，反向代理后才能访问到下游服务器
 func HTTPReverseProxyMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		serverInterface, ok := c.Get("service")
@@ -19,6 +19,7 @@ func HTTPReverseProxyMiddleware() gin.HandlerFunc {
 		}
 		serviceDetail := serverInterface.(*dao.ServiceDetail)
 
+		// 负载均衡
 		lb, err := dao.LoadBalancerHandler.GetLoadBalancer(serviceDetail)
 		if err != nil {
 			middleware.ResponseError(c, 2002, err)
@@ -26,6 +27,7 @@ func HTTPReverseProxyMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		// 连接池
 		trans, err := dao.TransporterHandler.GetTransporter(serviceDetail)
 		if err != nil {
 			middleware.ResponseError(c, 2003, err)
@@ -34,7 +36,7 @@ func HTTPReverseProxyMiddleware() gin.HandlerFunc {
 		}
 
 		proxy := reverse_proxy.NewLoadBalanceReverseProxy(c, lb, trans)
-		proxy.ServeHTTP(c.Writer, c.Request)
+		proxy.ServeHTTP(c.Writer, c.Request) // 执行下游服务器
 		c.Abort()
 	}
 }

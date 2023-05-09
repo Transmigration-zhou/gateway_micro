@@ -1,16 +1,13 @@
 package reverse_proxy
 
 import (
-	"bytes"
-	"compress/gzip"
 	"gateway-micro/middleware"
 	"gateway-micro/reverse_proxy/load_balance"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -24,7 +21,7 @@ func NewLoadBalanceReverseProxy(c *gin.Context, lb load_balance.LoadBalance, tra
 		}
 		target, err := url.Parse(nextAddr)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		targetQuery := target.RawQuery
 		req.URL.Scheme = target.Scheme
@@ -46,29 +43,30 @@ func NewLoadBalanceReverseProxy(c *gin.Context, lb load_balance.LoadBalance, tra
 		if strings.Contains(resp.Header.Get("Connection"), "Upgrade") {
 			return nil
 		}
-
-		var payload []byte
-		var readErr error
-
-		if strings.Contains(resp.Header.Get("Content-Encoding"), "gzip") {
-			gr, err := gzip.NewReader(resp.Body)
-			if err != nil {
-				return err
-			}
-			payload, readErr = ioutil.ReadAll(gr)
-			resp.Header.Del("Content-Encoding")
-		} else {
-			payload, readErr = ioutil.ReadAll(resp.Body)
-		}
-		if readErr != nil {
-			return readErr
-		}
-
-		c.Set("status_code", resp.StatusCode)
-		c.Set("payload", payload)
-		resp.Body = ioutil.NopCloser(bytes.NewBuffer(payload))
-		resp.ContentLength = int64(len(payload))
-		resp.Header.Set("Content-Length", strconv.FormatInt(int64(len(payload)), 10))
+		//
+		//var payload []byte
+		//var readErr error
+		//
+		//// gzip压缩
+		//if strings.Contains(resp.Header.Get("Content-Encoding"), "gzip") {
+		//	gr, err := gzip.NewReader(resp.Body)
+		//	if err != nil {
+		//		return err
+		//	}
+		//	payload, readErr = ioutil.ReadAll(gr)
+		//	resp.Header.Del("Content-Encoding")
+		//} else {
+		//	payload, readErr = ioutil.ReadAll(resp.Body)
+		//}
+		//if readErr != nil {
+		//	return readErr
+		//}
+		//
+		//c.Set("status_code", resp.StatusCode)
+		//c.Set("payload", payload)
+		//resp.Body = ioutil.NopCloser(bytes.NewBuffer(payload))
+		//resp.ContentLength = int64(len(payload))
+		//resp.Header.Set("Content-Length", strconv.FormatInt(int64(len(payload)), 10))
 		return nil
 	}
 
@@ -78,7 +76,7 @@ func NewLoadBalanceReverseProxy(c *gin.Context, lb load_balance.LoadBalance, tra
 		middleware.ResponseError(c, 999, err)
 	}
 
-	return &httputil.ReverseProxy{Director: director, ModifyResponse: modifyFunc, ErrorHandler: errFunc}
+	return &httputil.ReverseProxy{Director: director, Transport: trans, ModifyResponse: modifyFunc, ErrorHandler: errFunc}
 }
 
 func singleJoiningSlash(a, b string) string {

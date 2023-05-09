@@ -75,9 +75,10 @@ func (s *ServiceManager) LoadOnce() error {
 }
 
 func (s *ServiceManager) HTTPAccessMode(c *gin.Context) (*ServiceDetail, error) {
-	//1、前缀匹配 /abc ==> serviceSlice.rule
-	//2、域名匹配 www.test.com ==> serviceSlice.rule
+	//1、域名匹配 www.test.com ==> serviceSlice.rule（测试修改本地hosts文件）
 	//host c.Request.Host
+
+	//2、前缀匹配 /abc ==> serviceSlice.rule
 	//path c.Request.URL.Path
 	host := c.Request.Host
 	host = host[0:strings.Index(host, ":")]

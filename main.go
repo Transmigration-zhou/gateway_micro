@@ -37,8 +37,8 @@ func main() {
 	} else {
 		lib.InitModule(*config, []string{"base", "mysql", "redis"})
 		defer lib.Destroy()
-		dao.ServiceManagerHandler.LoadOnce()
-		dao.TenantManagerHandler.LoadOnce()
+		dao.ServiceManagerHandler.LoadOnce() // 加载服务列表
+		dao.TenantManagerHandler.LoadOnce()  // 加载租户列表
 
 		go func() {
 			tcp_proxy_router.TcpProxyRun()
