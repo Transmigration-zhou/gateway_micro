@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// HTTPStripUriMiddleware 当通过一个uris前缀匹配一个API时，要从upstream URI中去掉匹配的前缀
 func HTTPStripUriMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		serverInterface, ok := c.Get("service")
