@@ -1,4 +1,4 @@
-package server
+package tcp_server
 
 import (
 	"context"
@@ -135,9 +135,4 @@ func (s *TcpServer) getDoneChan() <-chan struct{} {
 		s.doneChan = make(chan struct{})
 	}
 	return s.doneChan
-}
-
-func ListenAndServe(addr string, handler TCPHandler) error {
-	server := &TcpServer{Addr: addr, Handler: handler, doneChan: make(chan struct{})}
-	return server.ListenAndServe()
 }

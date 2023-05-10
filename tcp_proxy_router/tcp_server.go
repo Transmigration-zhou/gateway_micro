@@ -6,8 +6,8 @@ import (
 	"gateway-micro/dao"
 	"gateway-micro/public"
 	"gateway-micro/reverse_proxy"
-	s "gateway-micro/server_client_demo/tcp/server"
 	"gateway-micro/tcp_proxy_middleware"
+	s "gateway-micro/tcp_server"
 	"log"
 )
 

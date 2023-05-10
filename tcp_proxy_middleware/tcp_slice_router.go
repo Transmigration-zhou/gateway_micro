@@ -2,7 +2,7 @@ package tcp_proxy_middleware
 
 import (
 	"context"
-	s "gateway-micro/server_client_demo/tcp/server"
+	s "gateway-micro/tcp_server"
 	"math"
 	"net"
 )
