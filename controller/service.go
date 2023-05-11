@@ -775,10 +775,12 @@ func (service *ServiceController) ServiceUpdateGrpc(c *gin.Context) {
 		return
 	}
 
-	grpcRule := &dao.TcpRule{}
-	grpcRule = serviceDetail.TCPRule
+	grpcRule := &dao.GrpcRule{}
+	grpcRule = serviceDetail.GRPCRule
 	grpcRule.ServiceID = info.ID
 	grpcRule.Port = params.Port
+	grpcRule.HeaderTransfer = params.HeaderTransfer
+
 	if err := grpcRule.Updates(c, tx); err != nil {
 		tx.Rollback()
 		middleware.ResponseError(c, 2005, err)

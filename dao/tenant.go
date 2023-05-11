@@ -36,10 +36,11 @@ func (t *Tenant) PageList(c *gin.Context, db *gorm.DB, param *dto.TenantListInpu
 	if param.Info != "" {
 		query = query.Where("(tenant_id like ? or name like ?)", "%"+param.Info+"%", "%"+param.Info+"%")
 	}
+	query.Count(&total)
 	if err := query.Limit(param.PageSize).Offset(offset).Order("id desc").Find(&list).Error; err != nil {
 		return nil, 0, err
 	}
-	query.Limit(param.PageSize).Offset(offset).Count(&total)
+	query.Limit(param.PageSize).Offset(offset)
 	return list, total, nil
 }
 
