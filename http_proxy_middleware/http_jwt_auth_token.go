@@ -40,6 +40,7 @@ func HTTPJwtAuthTokenMiddleware() gin.HandlerFunc {
 				}
 			}
 		}
+
 		if serviceDetail.AccessControl.OpenAuth == 1 && !tenantMatched {
 			middleware.ResponseError(c, 2003, errors.New("not match valid tenant"))
 			c.Abort()

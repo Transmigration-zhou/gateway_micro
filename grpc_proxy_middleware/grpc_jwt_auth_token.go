@@ -1,6 +1,7 @@
 package grpc_proxy_middleware
 
 import (
+	"context"
 	"gateway-micro/dao"
 	"gateway-micro/public"
 	"github.com/pkg/errors"
@@ -9,6 +10,15 @@ import (
 	"log"
 	"strings"
 )
+
+type wrappedStream struct {
+	grpc.ServerStream
+	ctx context.Context
+}
+
+func (w *wrappedStream) Context() context.Context {
+	return w.ctx
+}
 
 func GRPCJwtAuthTokenMiddleware(serviceDetail *dao.ServiceDetail) grpc.StreamServerInterceptor {
 	return func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
@@ -22,6 +32,7 @@ func GRPCJwtAuthTokenMiddleware(serviceDetail *dao.ServiceDetail) grpc.StreamSer
 		if len(auths) > 0 {
 			auth = auths[0]
 		}
+
 		token := strings.ReplaceAll(auth, "Bearer ", "")
 		tenantMatched := false
 		if token != "" {
@@ -38,11 +49,12 @@ func GRPCJwtAuthTokenMiddleware(serviceDetail *dao.ServiceDetail) grpc.StreamSer
 				}
 			}
 		}
+
 		if serviceDetail.AccessControl.OpenAuth == 1 && !tenantMatched {
 			return errors.New("not match valid tenant")
 		}
 
-		if err := handler(srv, ss); err != nil {
+		if err := handler(srv, &wrappedStream{ss, metadata.NewIncomingContext(ss.Context(), md)}); err != nil {
 			log.Printf("GRPCJwtAuthTokenMiddleware failed with error %v\n", err)
 			return err
 		}

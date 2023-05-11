@@ -19,7 +19,7 @@ var addr = flag.String("addr", "localhost:8954", "the address to connect to")
 const (
 	timestampFormat = time.StampNano
 	streamingCount  = 10
-	AccessToken     = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcHBfaWRfYiIsImV4cCI6MTY4MTgyOTE5MX0.FE-E4L-Y_Hq2mD5jGXF6b1SeGtR5k19ZTezRuMso73k"
+	AccessToken     = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcHBfaWRfYSIsImV4cCI6MTY4MzgyNjQ1MX0.4pMajNjhiG6EKV1fmloLmZeH6hqnKsbUVVab7e6jXBY"
 )
 
 func unaryCallWithMetadata(c pb.EchoClient, message string) {
@@ -146,19 +146,19 @@ func main() {
 			//调用一元方法
 			//for i := 0; i < 100; i++ {
 			unaryCallWithMetadata(c, message)
-			time.Sleep(400 * time.Millisecond)
+			//time.Sleep(400 * time.Millisecond)
 			//}
 			//
-			//服务端流式
-			serverStreamingWithMetadata(c, message)
-			time.Sleep(1 * time.Second)
-
-			//客户端流式
-			clientStreamWithMetadata(c, message)
-			time.Sleep(1 * time.Second)
-
-			//双向流式
-			bidirectionalWithMetadata(c, message)
+			////服务端流式
+			//serverStreamingWithMetadata(c, message)
+			//time.Sleep(1 * time.Second)
+			//
+			////客户端流式
+			//clientStreamWithMetadata(c, message)
+			//time.Sleep(1 * time.Second)
+			//
+			////双向流式
+			//bidirectionalWithMetadata(c, message)
 		}()
 	}
 	wg.Wait()

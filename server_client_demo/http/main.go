@@ -20,7 +20,7 @@ func (r *HttpServer) Run() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", r.HelloHandler)
 	mux.HandleFunc("/base/error", r.ErrorHandler)
-	mux.HandleFunc("/httphttp/timeout", r.TimeoutHandler)
+	mux.HandleFunc("/httptimeout/timeout", r.TimeoutHandler)
 	server := &http.Server{
 		Addr:         r.Addr,
 		WriteTimeout: time.Second * 3,

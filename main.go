@@ -41,25 +41,25 @@ func main() {
 		dao.TenantManagerHandler.LoadOnce()  // 加载租户列表
 
 		go func() {
-			tcp_proxy_router.TcpProxyRun()
-		}()
-		go func() {
-			grpc_proxy_router.GrpcProxyRun()
-		}()
-		go func() {
 			http_proxy_router.HttpProxyRun()
 		}()
 		go func() {
 			http_proxy_router.HttpsProxyRun()
+		}()
+		go func() {
+			tcp_proxy_router.TcpProxyRun()
+		}()
+		go func() {
+			grpc_proxy_router.GrpcProxyRun()
 		}()
 
 		quit := make(chan os.Signal)
 		signal.Notify(quit, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
 		<-quit
 
-		tcp_proxy_router.TcpProxyStop()
-		grpc_proxy_router.GrpcProxyStop()
 		http_proxy_router.HttpProxyStop()
 		http_proxy_router.HttpsProxyStop()
+		tcp_proxy_router.TcpProxyStop()
+		grpc_proxy_router.GrpcProxyStop()
 	}
 }

@@ -37,7 +37,6 @@ func GrpcProxyRun() {
 				log.Fatalf("[ERROR] GrpcListen %s, err: %v\n", addr, err)
 			}
 
-			grpcHandler := reverse_proxy.NewGrpcLoadBalanceHandler(lb)
 			server := grpc.NewServer(
 				grpc.ChainStreamInterceptor(
 					grpc_proxy_middleware.GRPCFlowCountMiddleware(serviceDetail),
@@ -47,11 +46,17 @@ func GrpcProxyRun() {
 					grpc_proxy_middleware.GRPCJwtFlowLimitMiddleware(),
 					grpc_proxy_middleware.GRPCWhiteListMiddleware(serviceDetail),
 					grpc_proxy_middleware.GRPCBlackListMiddleware(serviceDetail),
-					grpc_proxy_middleware.GRPCHeaderTransferMiddleware(serviceDetail),
+					grpc_proxy_middleware.GRPCMetadataTransferMiddleware(serviceDetail),
 				),
 				grpc.CustomCodec(proxy.Codec()),
-				grpc.UnknownServiceHandler(grpcHandler),
+				grpc.UnknownServiceHandler(
+					reverse_proxy.NewGrpcLoadBalanceHandler(lb),
+				),
 			)
+
+			if err := server.Serve(listener); err != nil {
+				log.Fatalf("[ERROR] GrpcProxyRun %s, err: %v\n", addr, err)
+			}
 
 			grpcServer := &GrpcServer{
 				Addr:   addr,
@@ -59,9 +64,6 @@ func GrpcProxyRun() {
 			}
 			grpcServerList = append(grpcServerList, grpcServer)
 			log.Printf("[INFO] GrpcProxyRun %s\n", addr)
-			if err := server.Serve(listener); err != nil {
-				log.Fatalf("[ERROR] GrpcProxyRun %s, err: %v\n", addr, err)
-			}
 		}(tempItem)
 	}
 }
