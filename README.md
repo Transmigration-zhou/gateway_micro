@@ -1,3 +1,5 @@
+技术栈：gin+gorm
+
 - 运行管理面板（配合前端项目）
 ```bash
 go run main.go -config=./conf/dev/ -endpoint dashboard
