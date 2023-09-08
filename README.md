@@ -10,4 +10,4 @@ go run main.go -config=./conf/dev/ -endpoint dashboard
 go run main.go -config=./conf/dev/ -endpoint server
 ```
 
-后端：https://github.com/Transmigration-zhou/gateway_vue
+前端：https://github.com/Transmigration-zhou/gateway_vue
